@@ -5,15 +5,46 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ClassMonitor
 {
-   
-
     public partial class MainForm : Form
     {
+        List<Task> tasks = new List<Task>();
+
+        public static CancellationTokenSource storedTokenSource;
+
+        delegate void ImageCallback(PictureBox p, Image image);
+        public CancellationTokenSource TokenSource
+        {
+            get
+            {
+                if (storedTokenSource == null)
+                {
+                    storedTokenSource = new CancellationTokenSource();
+                    return storedTokenSource;
+                }
+                else if (storedTokenSource.IsCancellationRequested)
+                {
+                    storedTokenSource = new CancellationTokenSource();
+                    return storedTokenSource;
+                }
+                else {
+                    return storedTokenSource;
+                }
+            }
+            set { this.TokenSource = value; }
+        }
+        public CancellationToken ct
+        {
+            get { return TokenSource.Token; }
+            set { this.ct = value; }
+        }
+
+
         public MainForm()
         {
             InitializeComponent();
@@ -51,48 +82,112 @@ namespace ClassMonitor
         private void p_DoubleClick(object sender, EventArgs e)
         {
             var p = (Panel)sender;
-            p.BackColor = Color.Purple;
             if (p.Width < 400)
             {
                 p.Width = p.Width + 200;
                 p.Height = p.Height + 200;
             }
-            else {
+            else
+            {
                 p.Width = 200;
-                p.Height = 200;
+                p.Height = 250;
             }
         }
 
-        private void createPanel(int num)
+        private void createPanel(List<ClassroomView> list)
         {
             flRightPanel.Controls.Clear();
+            if (storedTokenSource != null)
+                storedTokenSource.Cancel();
 
-            for (int i = 0; i < num; i++)
+            tasks.RemoveRange(0,tasks.Count);
+            
+            int length = list.Count;
+            for (int i= 0;i<length; i++)
             {
-                Panel p = new Panel();
-                p.BackColor = Color.Teal;
-                p.Width = 200;
-                p.Height = 200;
-                p.MouseHover += new EventHandler(this.p_MouseHover);
-                p.MouseLeave += new EventHandler(this.p_MouseLeave);
-                p.DoubleClick += new EventHandler(this.p_DoubleClick);
-                flRightPanel.Controls.Add(p);
+                Panel panel = new Panel();
+                panel.BackColor = Color.Teal;
+                panel.Width = 200;
+                panel.Height = 250;
+
+                PictureBox p = new PictureBox();
+                p.Name = "p" + i;
+                p.SizeMode = PictureBoxSizeMode.CenterImage;
+                p.Dock = DockStyle.Fill ;
+                p.DoubleClick += Panel_DoubleClick;
+
+                Label label = new Label();
+                label.Text = list[i].ClassroomName;
+                label.BackColor = Color.Purple;
+                label.Dock = DockStyle.Bottom;
+                label.ForeColor = Color.White;
+                label.TextAlign = ContentAlignment.MiddleCenter;
+
+                panel.Controls.Add(p);
+                panel.Controls.Add(label);
+                flRightPanel.Controls.Add(panel);
+                tasks.Add(UpdatePictureBox(p, label, panel, ct));
             }
+        }
+
+        private void Panel_DoubleClick(object sender, EventArgs e)
+        {
+            PictureBox p = (PictureBox)(sender);
+            Panel panel = (Panel)p.Parent;
+            p_DoubleClick(panel,e);
+        }
+
+        private Task UpdatePictureBox(PictureBox p, Label label, Panel panel, CancellationToken token)
+        {
+            return Task.Run(() =>
+            {
+                int counter = 0;
+                while (true)
+                {
+                    if (token.IsCancellationRequested) {
+                        break;
+                    }
+                        
+                    counter %= 4;
+                    counter++;
+                    string filename = @"E:\Test\images\" + p.Name + @"\ac" + counter + ".png";
+                    try
+                    {
+                        using (Image newImg = new Bitmap(filename))
+                        {
+                            //Action action = () => { p.Image = newImg; };
+                            //this.BeginInvoke(action);
+                            var d = new ImageCallback(method);
+                            this.Invoke(d, new object[] { p, newImg });
+                            Thread.Sleep(1000);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Action action = () => { label.Text = ex.Message; label.BackColor = Color.Red; };
+                        this.BeginInvoke(action);
+                    }
+                    finally
+                    {
+                        p.Image = null;
+                    }
+                }
+            }, token);
+        }
+
+        private void method(PictureBox p, Image image)
+        {
+            p.Image = image;
         }
 
         private void hideLeftToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //panel2.Hide();
-
-            //tablelayout.ColumnStyles[0].SizeType = SizeType.Percent;
             tablelayout.ColumnStyles[1].Width = 90;
             tablelayout.ColumnStyles[0].Width = 0;
-
         }
 
         private void showLeftToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //panel2.Show();
             tablelayout.ColumnStyles[1].Width = 60;
             tablelayout.ColumnStyles[0].Width = 40;
         }
@@ -110,9 +205,7 @@ namespace ClassMonitor
                 ClassroomService service = new ClassroomService();
                 List<ClassroomView> list = service.GetClassroomByGroupID(num);
                 dataGridView.DataSource = list;
-                dataGridView.DefaultCellStyle.ForeColor = Color.Blue;
-
-                createPanel(list.Count);
+                createPanel(list);
             }
         }
 
@@ -123,6 +216,17 @@ namespace ClassMonitor
             {
                 row.DefaultCellStyle.ForeColor = Color.Green;
             }
+            if (row.Cells["CameraStatus"].Value?.ToString() == "On")
+            {
+                row.Cells["CameraStatus"].Style.ForeColor = Color.Blue;
+            }
+        }
+
+        private void lblUser_Click(object sender, EventArgs e)
+        {
+            storedTokenSource.Cancel();
+            tasks.RemoveRange(0, tasks.Count);
+            flRightPanel.Controls.Clear();
         }
     }
 }
