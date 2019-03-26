@@ -143,7 +143,6 @@ namespace ClassMonitor
             this.lblUser.TabIndex = 0;
             this.lblUser.Text = "Anonymous";
             this.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblUser.Click += new System.EventHandler(this.lblUser_Click);
             // 
             // tablelayout
             // 

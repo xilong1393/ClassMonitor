@@ -155,10 +155,8 @@ namespace ClassMonitor
                     {
                         using (Image newImg = new Bitmap(filename))
                         {
-                            //Action action = () => { p.Image = newImg; };
-                            //this.BeginInvoke(action);
-                            var d = new ImageCallback(method);
-                            this.Invoke(d, new object[] { p, newImg });
+                            Action action = () => { p.Image = newImg; };
+                            this.BeginInvoke(action);
                             Thread.Sleep(1000);
                         }
                     }
@@ -173,11 +171,6 @@ namespace ClassMonitor
                     }
                 }
             }, token);
-        }
-
-        private void method(PictureBox p, Image image)
-        {
-            p.Image = image;
         }
 
         private void hideLeftToolStripMenuItem_Click(object sender, EventArgs e)
@@ -220,13 +213,6 @@ namespace ClassMonitor
             {
                 row.Cells["CameraStatus"].Style.ForeColor = Color.Blue;
             }
-        }
-
-        private void lblUser_Click(object sender, EventArgs e)
-        {
-            storedTokenSource.Cancel();
-            tasks.RemoveRange(0, tasks.Count);
-            flRightPanel.Controls.Clear();
         }
     }
 }
