@@ -1,5 +1,4 @@
 ﻿using ClassMonitor3.Model;
-using ClassMonitor3.Service;
 using ClassMonitor3.Util;
 using NAudio.Wave;
 using System;
@@ -187,19 +186,6 @@ namespace ClassMonitor3.Interfaces
                 Panel p = (Panel)b.Parent.Parent.Parent;
                 foreach (LinkLabel l in Helper.GetAll(p, b.GetType()).Where(a=>a.Text!="detail"&&a!=b)) {
                     l.Text = "play";
-                }
-                try
-                {
-                    LogService logService = new LogService();
-                    UserOperationLog userOperationLog = new UserOperationLog();
-                    userOperationLog.SessionID = LoginInfo.sessionID;
-                    userOperationLog.Operation = "Play_Sound";
-                    userOperationLog.OperationTime = DateTime.Now;
-                    logService.LogUserOperation(userOperationLog);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
                 }
             }
             else {

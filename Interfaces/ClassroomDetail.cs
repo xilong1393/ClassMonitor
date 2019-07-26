@@ -1,6 +1,4 @@
-﻿using ClassMonitor3.Model;
-using ClassMonitor3.Service;
-using ClassMonitor3.Util;
+﻿using ClassMonitor3.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
