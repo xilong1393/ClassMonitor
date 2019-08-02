@@ -16,7 +16,7 @@ namespace ClassMonitor3.Util
         {
             var client = new HttpClient();
             client.Timeout = TimeSpan.FromSeconds(30); //set your own timeout.
-            client.BaseAddress = new Uri("http://localhost:8080/");
+            client.BaseAddress = new Uri("http://localhost:51628/");
             return client;
         }
         public static ComboItems[] GetComboItems()
