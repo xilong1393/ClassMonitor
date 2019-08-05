@@ -82,10 +82,5 @@ namespace ClassMonitor3.Interfaces
                 MessageBox.Show("Enter key pressed");
             }
         }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

@@ -62,7 +62,6 @@ namespace ClassMonitor3.Interfaces
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
 
