@@ -35,6 +35,7 @@ namespace ClassMonitor3.Interfaces
         public MainForm()
         {
             InitializeComponent();
+            
             LoadData();
         }
         public async void LoadData()
@@ -90,9 +91,10 @@ namespace ClassMonitor3.Interfaces
             for (int i = 0; i < length; i++)
             {
                 Panel panel = new Panel();
-                panel.BackColor = Color.Teal;
+                panel.BackColor = Color.LightGray;
                 panel.Width = 250;
                 panel.Height = 300;
+                panel.BorderStyle = BorderStyle.FixedSingle;
 
                 PictureBox p = new PictureBox();
                 p.Name = "p" + i;
@@ -103,7 +105,7 @@ namespace ClassMonitor3.Interfaces
                 FlowLayoutPanel operationPanel = new FlowLayoutPanel();
                 operationPanel.BackColor = Color.Gray;
                 operationPanel.Dock = DockStyle.Bottom;
-                operationPanel.Height = 50;
+                operationPanel.Height = 25;
                 operationPanel.Tag = i;
 
                 LinkLabel detail = new LinkLabel();
@@ -340,8 +342,8 @@ namespace ClassMonitor3.Interfaces
 
         private void btnStartCourse_Click(object sender, EventArgs e)
         {
-            if (dataGridView.CurrentCell.ColumnIndex != 0)
-                MessageBox.Show("Please select a classroom!");
+            if (dataGridView.SelectedRows.Count != 0)
+                MessageBox.Show(dataGridView.SelectedRows.Count+"");
         }
     }
 }

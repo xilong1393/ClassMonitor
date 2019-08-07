@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace ClassMonitor3.Interfaces
 {
@@ -31,6 +32,7 @@ namespace ClassMonitor3.Interfaces
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblLogout = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.menuCB = new System.Windows.Forms.ComboBox();
@@ -94,8 +96,9 @@ namespace ClassMonitor3.Interfaces
             // 
             // menuCB
             // 
+            this.menuCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.menuCB.FormattingEnabled = true;
-            this.menuCB.Location = new System.Drawing.Point(1061, 11);
+            this.menuCB.Location = new System.Drawing.Point(1082, 10);
             this.menuCB.Name = "menuCB";
             this.menuCB.Size = new System.Drawing.Size(100, 23);
             this.menuCB.TabIndex = 10;
@@ -209,7 +212,7 @@ namespace ClassMonitor3.Interfaces
             this.btnStartCourse.Name = "btnStartCourse";
             this.btnStartCourse.Size = new System.Drawing.Size(87, 27);
             this.btnStartCourse.TabIndex = 0;
-            this.btnStartCourse.Text = "Start Course";
+            this.btnStartCourse.Text = "Stop Course";
             this.btnStartCourse.UseVisualStyleBackColor = true;
             this.btnStartCourse.Click += new System.EventHandler(this.btnStartCourse_Click);
             // 
@@ -231,7 +234,9 @@ namespace ClassMonitor3.Interfaces
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView.Location = new System.Drawing.Point(0, 26);
+            this.dataGridView.MultiSelect = false;
             this.dataGridView.Name = "dataGridView";
+            this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView.Size = new System.Drawing.Size(675, 690);
             this.dataGridView.TabIndex = 11;
             this.dataGridView.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView_RowPrePaint);
