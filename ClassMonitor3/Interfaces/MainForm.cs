@@ -35,7 +35,6 @@ namespace ClassMonitor3.Interfaces
         public MainForm()
         {
             InitializeComponent();
-            
             LoadData();
         }
         public async void LoadData()
@@ -110,12 +109,12 @@ namespace ClassMonitor3.Interfaces
 
                 LinkLabel detail = new LinkLabel();
                 detail.Height = 23;
-                detail.Width = 40;
+                detail.Width = 42;
                 detail.TextAlign = ContentAlignment.MiddleCenter;
                 detail.LinkBehavior = LinkBehavior.NeverUnderline;
                 //b.AutoSize = true;
                 detail.BorderStyle = BorderStyle.FixedSingle;
-                detail.Text = "detail";
+                detail.Text = "Detail";
                 detail.LinkColor = Color.Black;
                 detail.Click += Panel_Pop;
                 detail.Tag = list[i].ClassroomID;
@@ -124,12 +123,12 @@ namespace ClassMonitor3.Interfaces
 
                 LinkLabel sound = new LinkLabel();
                 sound.Height = 23;
-                sound.Width = 40;
+                sound.Width = 46;
                 sound.TextAlign = ContentAlignment.MiddleCenter;
                 sound.LinkBehavior = LinkBehavior.NeverUnderline;
                 //sound.AutoSize = true;
                 sound.BorderStyle = BorderStyle.FixedSingle;
-                sound.Text = "play";
+                sound.Text = "Sound";
                 sound.LinkColor = Color.Black;
                 sound.Click += Play_Sound;
                 operationPanel.Controls.Add(sound);
@@ -165,51 +164,55 @@ namespace ClassMonitor3.Interfaces
 
         private void Play_Sound(object sender, EventArgs e)
         {
-            LinkLabel b = (LinkLabel)(sender);
-
-            if (audioFileReader != null && waveOutDevice != null)
+            try
             {
-                waveOutDevice.Stop();
-                audioFileReader.Dispose();
-                waveOutDevice.Dispose();
-                audioFileReader = null;
-                waveOutDevice = null;
-            }
+                LinkLabel b = (LinkLabel)(sender);
 
-            if (waveOutDevice == null) waveOutDevice = new WaveOut();
-            if (audioFileReader == null) audioFileReader = new AudioFileReader(@"C:\Users\xyu42\Music\Grace.mp3");
-
-            if (b.Text == "play")
-            {
-                b.Text = "stop";
-                waveOutDevice.Init(audioFileReader);
-                waveOutDevice.Play();
-
-                Panel p = (Panel)b.Parent.Parent.Parent;
-                foreach (LinkLabel l in Helper.GetAll(p, b.GetType()).Where(a=>a.Text!="detail"&&a!=b)) {
-                    l.Text = "play";
-                }
-                try
+                if (audioFileReader != null && waveOutDevice != null)
                 {
+                    waveOutDevice.Stop();
+                    audioFileReader.Dispose();
+                    waveOutDevice.Dispose();
+                    audioFileReader = null;
+                    waveOutDevice = null;
+                }
+
+                if (waveOutDevice == null) waveOutDevice = new WaveOut();
+                if (audioFileReader == null) audioFileReader = new AudioFileReader(@"C:\Users\xyu42\Music\Grace.mp3");
+
+                if (b.Text == "Sound")
+                {
+                    b.Text = "Stop";
+                    waveOutDevice.Init(audioFileReader);
+                    waveOutDevice.Play();
+
+                    Panel p = (Panel)b.Parent.Parent.Parent;
+                    foreach (LinkLabel l in Helper.GetAll(p, b.GetType()).Where(a => a.Text != "Detail" && a != b))
+                    {
+                        l.Text = "Sound";
+                    }
+
                     LogService logService = new LogService();
                     UserOperationLog userOperationLog = new UserOperationLog();
                     userOperationLog.SessionID = LoginInfo.sessionID;
                     userOperationLog.Operation = "Play_Sound";
                     userOperationLog.OperationTime = DateTime.Now;
                     logService.LogUserOperation(userOperationLog);
+
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message);
+                    b.Text = "Sound";
+                    waveOutDevice.Stop();
+                    audioFileReader.Dispose();
+                    waveOutDevice.Dispose();
+                    audioFileReader = null;
+                    waveOutDevice = null;
                 }
             }
-            else {
-                b.Text = "play";
-                waveOutDevice.Stop();
-                audioFileReader.Dispose();
-                waveOutDevice.Dispose();
-                audioFileReader = null;
-                waveOutDevice = null;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         private void Slide_Change(object sender, EventArgs e)
@@ -320,6 +323,8 @@ namespace ClassMonitor3.Interfaces
             int groupID = (int)comboBox.SelectedValue;
             await LoadClassroomList(LoginInfo.sessionID,groupID);
             dataGridView.DataSource = list;
+            dataGridView.ClearSelection();
+
             createPanel(menuCB.SelectedItem.ToString());
         }
         private async Task LoadClassroomList(string sessionID, int groupID) {
@@ -344,6 +349,16 @@ namespace ClassMonitor3.Interfaces
         {
             if (dataGridView.SelectedRows.Count != 0)
                 MessageBox.Show(dataGridView.SelectedRows.Count+"");
+        }
+
+        private void dataGridView_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dataGridView.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                dataGridView.ClearSelection();
+            }
         }
     }
 }

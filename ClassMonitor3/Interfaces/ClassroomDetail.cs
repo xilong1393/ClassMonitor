@@ -119,7 +119,7 @@ namespace ClassMonitor3.Interfaces
                             Thread.Sleep(1000);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         Action action = () => { p.BackColor = Color.Black; };
                         p.SafeInvoke(action, true);

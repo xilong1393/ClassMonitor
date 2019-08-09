@@ -32,7 +32,6 @@ namespace ClassMonitor3.Interfaces
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblLogout = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.menuCB = new System.Windows.Forms.ComboBox();
@@ -233,6 +232,7 @@ namespace ClassMonitor3.Interfaces
             this.dataGridView.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridView.Location = new System.Drawing.Point(0, 26);
             this.dataGridView.MultiSelect = false;
             this.dataGridView.Name = "dataGridView";
@@ -240,6 +240,7 @@ namespace ClassMonitor3.Interfaces
             this.dataGridView.Size = new System.Drawing.Size(675, 690);
             this.dataGridView.TabIndex = 11;
             this.dataGridView.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView_RowPrePaint);
+            this.dataGridView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView_MouseClick);
             // 
             // panel2
             // 
