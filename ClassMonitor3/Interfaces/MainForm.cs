@@ -117,7 +117,7 @@ namespace ClassMonitor3.Interfaces
                 detail.Text = "Detail";
                 detail.LinkColor = Color.Black;
                 detail.Click += Panel_Pop;
-                detail.Tag = list[i].ClassroomID;
+                detail.Tag = list[i];
                 detail.Name = p.Name;
                 operationPanel.Controls.Add(detail);
 
@@ -231,7 +231,7 @@ namespace ClassMonitor3.Interfaces
             LinkLabel b = (LinkLabel)(sender);
             CancellationTokenSource tokenSource = (CancellationTokenSource)b.Parent.Parent.Tag;
             tokenSource.Cancel();
-            ClassroomDetail classroomDetail = new ClassroomDetail(b, int.Parse(b.Tag.ToString()));
+            ClassroomDetail classroomDetail = new ClassroomDetail(b);
             classroomDetail.Show();
         }
 
@@ -345,12 +345,6 @@ namespace ClassMonitor3.Interfaces
             menuCB.DataSource = Helper.GetComboItems();
         }
 
-        private void btnStartCourse_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count != 0)
-                MessageBox.Show(dataGridView.SelectedRows.Count+"");
-        }
-
         private void dataGridView_MouseClick(object sender, MouseEventArgs e)
         {
             var ht = dataGridView.HitTest(e.X, e.Y);
@@ -358,6 +352,244 @@ namespace ClassMonitor3.Interfaces
             if (ht.Type == DataGridViewHitTestType.None)
             {
                 dataGridView.ClearSelection();
+            }
+        }
+
+        private async void btnStopCourse_ClickAsync(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                int classroomID = list[row].ClassroomID;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                HttpResponseMessage response = await client.GetAsync("api/Operation/StopRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                    MessageBox.Show("succeeded!");
+                }
+                else
+                {
+                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                    MessageBox.Show("failure!");
+                }
+            }
+        }
+
+        private async void btnPushSchedule_ClickAsync(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                int classroomID = list[row].ClassroomID;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                HttpResponseMessage response = await client.GetAsync("api/Operation/PushSchedule?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                    MessageBox.Show("succeeded!");
+                }
+                else
+                {
+                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                    MessageBox.Show("failure!");
+                }
+            }
+        }
+
+        private async void button2_ClickAsync(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                int classroomID = list[row].ClassroomID;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                HttpResponseMessage response = await client.GetAsync("api/Operation/AbortRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                    MessageBox.Show("succeeded!");
+                }
+                else
+                {
+                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                    MessageBox.Show("failure!");
+                }
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                MessageBox.Show(list[row].ClassroomID.ToString());
+            }
+        }
+
+        private async void button6_ClickAsync(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                int classroomID = list[row].ClassroomID;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                HttpResponseMessage response = await client.GetAsync("api/Operation/CheckSchedule?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                    MessageBox.Show("succeeded!");
+                }
+                else
+                {
+                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                    MessageBox.Show("failure!");
+                }
+            }
+        }
+
+        private async void button10_ClickAsync(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                int classroomID = list[row].ClassroomID;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                HttpResponseMessage response = await client.GetAsync("api/Operation/ListLocalData?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                    MessageBox.Show("succeeded!");
+                }
+                else
+                {
+                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                    MessageBox.Show("failure!");
+                }
+            }
+        }
+
+        private async void button5_ClickAsync(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                int classroomID = list[row].ClassroomID;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                HttpResponseMessage response = await client.GetAsync("api/Operation/PushPPCConfig?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                    MessageBox.Show("succeeded!");
+                }
+                else
+                {
+                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                    MessageBox.Show("failure!");
+                }
+            }
+        }
+
+        private async void button8_ClickAsync(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                int classroomID = list[row].ClassroomID;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                HttpResponseMessage response = await client.GetAsync("api/Operation/RebootPPC?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                    MessageBox.Show("succeeded!");
+                }
+                else
+                {
+                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                    MessageBox.Show("failure!");
+                }
+            }
+        }
+
+        private async void button9_ClickAsync(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                int classroomID = list[row].ClassroomID;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                HttpResponseMessage response = await client.GetAsync("api/Operation/RebootIPC?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                    MessageBox.Show("succeeded!");
+                }
+                else
+                {
+                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                    MessageBox.Show("failure!");
+                }
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                MessageBox.Show(list[row].ClassroomID.ToString());
             }
         }
     }

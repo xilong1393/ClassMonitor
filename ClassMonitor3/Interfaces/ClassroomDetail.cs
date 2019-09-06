@@ -27,8 +27,9 @@ namespace ClassMonitor3.Interfaces
             }
             set { this.TokenSource = value; }
         }
-        public ClassroomDetail(LinkLabel linkLabel, int classroomID)
+        public ClassroomDetail(LinkLabel linkLabel)
         {
+            
             this.lb = linkLabel;
             this.lb.Enabled = false;
             InitializeComponent();
@@ -43,6 +44,7 @@ namespace ClassMonitor3.Interfaces
             //listView1.Items.Add(new ListViewItem(new[] { "IPCPort", classroomInfo.IPCPort+"" }));
             //listView1.Items.Add(new ListViewItem(new[] { "WBNumber", classroomInfo.WBNumber + "" }));
             //listView1.Items.Add(new ListViewItem(new[] { "Status", classroomInfo.Status == 1 ? "On" : "Off" }));
+            Text = ((ClassroomView)lb.Tag).ClassroomName;
 
             PictureBox p1 = new PictureBox();
             PictureBox p2 = new PictureBox();
