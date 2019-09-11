@@ -1,6 +1,6 @@
 ﻿namespace ClassMonitor3.Interfaces
 {
-    partial class ClassroomDetail
+    partial class ClassroomDetailForm
     {
         /// <summary>
         /// Required designer variable.

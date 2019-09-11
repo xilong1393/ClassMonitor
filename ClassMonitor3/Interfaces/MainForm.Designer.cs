@@ -31,7 +31,6 @@ namespace ClassMonitor3.Interfaces
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.lblLogout = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.menuCB = new System.Windows.Forms.ComboBox();
@@ -51,7 +50,6 @@ namespace ClassMonitor3.Interfaces
             this.panel2 = new System.Windows.Forms.Panel();
             this.comboBox = new System.Windows.Forms.ComboBox();
             this.flRightPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel4.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -156,7 +154,7 @@ namespace ClassMonitor3.Interfaces
             this.button7.TabIndex = 1;
             this.button7.Text = "Group Schedule";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.button7.Click += new System.EventHandler(this.button7_ClickAsync);
             // 
             // button6
             // 
@@ -189,7 +187,7 @@ namespace ClassMonitor3.Interfaces
             this.button11.TabIndex = 0;
             this.button11.Text = "Classroom Info";
             this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
+            this.button11.Click += new System.EventHandler(this.button11_ClickAsync);
             // 
             // button3
             // 
@@ -232,7 +230,7 @@ namespace ClassMonitor3.Interfaces
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 43);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(675, 716);
+            this.panel1.Size = new System.Drawing.Size(675, 414);
             this.panel1.TabIndex = 14;
             // 
             // dataGridView
@@ -246,7 +244,7 @@ namespace ClassMonitor3.Interfaces
             this.dataGridView.MultiSelect = false;
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView.Size = new System.Drawing.Size(675, 690);
+            this.dataGridView.Size = new System.Drawing.Size(675, 388);
             this.dataGridView.TabIndex = 11;
             this.dataGridView.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView_RowPrePaint);
             this.dataGridView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView_MouseClick);
@@ -280,7 +278,7 @@ namespace ClassMonitor3.Interfaces
             this.flRightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flRightPanel.Location = new System.Drawing.Point(675, 43);
             this.flRightPanel.Name = "flRightPanel";
-            this.flRightPanel.Size = new System.Drawing.Size(595, 716);
+            this.flRightPanel.Size = new System.Drawing.Size(595, 414);
             this.flRightPanel.TabIndex = 15;
             // 
             // MainForm
@@ -288,7 +286,7 @@ namespace ClassMonitor3.Interfaces
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(1270, 759);
+            this.ClientSize = new System.Drawing.Size(1270, 457);
             this.Controls.Add(this.flRightPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel4);
@@ -324,6 +322,5 @@ namespace ClassMonitor3.Interfaces
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ComboBox comboBox;
         private System.Windows.Forms.ComboBox menuCB;
-        private System.Windows.Forms.Timer timer1;
     }
 }

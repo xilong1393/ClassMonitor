@@ -1,5 +1,4 @@
 ﻿using ClassMonitor3.Model;
-using ClassMonitor3.Service;
 using ClassMonitor3.Util;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.Windows.Forms;
 
 namespace ClassMonitor3.Interfaces
 {
-    public partial class ClassroomDetail : Form
+    public partial class ClassroomDetailForm : Form
     {
         public LinkLabel lb;
         List<Task> tasks = new List<Task>();
@@ -27,7 +26,7 @@ namespace ClassMonitor3.Interfaces
             }
             set { this.TokenSource = value; }
         }
-        public ClassroomDetail(LinkLabel linkLabel)
+        public ClassroomDetailForm(LinkLabel linkLabel)
         {
             
             this.lb = linkLabel;

@@ -1,7 +1,7 @@
 ﻿using ClassMonitor3.Model;
-using ClassMonitor3.Service;
 using ClassMonitor3.Util;
 using NAudio.Wave;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -192,12 +192,12 @@ namespace ClassMonitor3.Interfaces
                         l.Text = "Sound";
                     }
 
-                    LogService logService = new LogService();
-                    UserOperationLog userOperationLog = new UserOperationLog();
-                    userOperationLog.SessionID = LoginInfo.sessionID;
-                    userOperationLog.Operation = "Play_Sound";
-                    userOperationLog.OperationTime = DateTime.Now;
-                    logService.LogUserOperation(userOperationLog);
+                    //LogService logService = new LogService();
+                    //UserOperationLog userOperationLog = new UserOperationLog();
+                    //userOperationLog.SessionID = LoginInfo.sessionID;
+                    //userOperationLog.Operation = "Play_Sound";
+                    //userOperationLog.OperationTime = DateTime.Now;
+                    //logService.LogUserOperation(userOperationLog);
 
                 }
                 else
@@ -231,7 +231,7 @@ namespace ClassMonitor3.Interfaces
             LinkLabel b = (LinkLabel)(sender);
             CancellationTokenSource tokenSource = (CancellationTokenSource)b.Parent.Parent.Tag;
             tokenSource.Cancel();
-            ClassroomDetail classroomDetail = new ClassroomDetail(b);
+            ClassroomDetailForm classroomDetail = new ClassroomDetailForm(b);
             classroomDetail.Show();
         }
 
@@ -303,10 +303,34 @@ namespace ClassMonitor3.Interfaces
             }
         }
 
-        private void button11_Click(object sender, EventArgs e)
+        private async void button11_ClickAsync(object sender, EventArgs e)
         {
-            ClassroomInfoForm classroomInfoForm = new ClassroomInfoForm();
-            classroomInfoForm.Show();
+            
+
+            if (dataGridView.SelectedRows.Count == 0)
+                MessageBox.Show("Please select a classroom");
+            else
+            {
+                int row = dataGridView.SelectedRows[0].Index;
+                int classroomID = list[row].ClassroomID;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                HttpResponseMessage response = await client.GetAsync("api/Operation/ClassroomInfo?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ClassroomView classroomView = await response.Content.ReadAsAsync<ClassroomView>();
+                    ClassroomInfoForm classroomInfoForm = new ClassroomInfoForm(classroomView);
+                    classroomInfoForm.Show();
+                }
+                else
+                {
+                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                    MessageBox.Show("failure!");
+                }
+            }
         }
 
         private void dataGridView_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
@@ -463,8 +487,11 @@ namespace ClassMonitor3.Interfaces
 
                 if (response.IsSuccessStatusCode)
                 {
-                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                    MessageBox.Show("succeeded!");
+                    ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                    DataTable list = JsonConvert.DeserializeObject<DataTable>((string)result.Obj);
+                    CheckScheduleForm cs = new CheckScheduleForm(list);
+                    cs.Show();
+                    //MessageBox.Show("succeeded!");
                 }
                 else
                 {
@@ -582,14 +609,36 @@ namespace ClassMonitor3.Interfaces
             }
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private async void button7_ClickAsync(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
-                MessageBox.Show("Please select a classroom");
+
+            if (comboBox.Items.Count == 0)
+                MessageBox.Show("there is no group");
             else
             {
-                int row = dataGridView.SelectedRows[0].Index;
-                MessageBox.Show(list[row].ClassroomID.ToString());
+                int groupID = (int)comboBox.SelectedValue;
+                var client = Helper.CreateClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.GetAsync("api/Operation/GroupSchedule?groupID=" + groupID + "&sessionID=" + LoginInfo.sessionID);
+                if (response.IsSuccessStatusCode)
+                {
+                    try
+                    {
+                        DataTable result = await response.Content.ReadAsAsync<DataTable>();
+                        GroupScheduleForm gs = new GroupScheduleForm(result);
+                        gs.Show();
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("failure!");
+                    }
+                   
+                }
+                else
+                {
+                    MessageBox.Show("failure!");
+                }
             }
         }
     }

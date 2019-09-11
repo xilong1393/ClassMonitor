@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassMonitor3.Model
 {
-    class ClassroomView
+    public class ClassroomView
     {
         [Browsable(false)]
         public int ClassroomID { get; set; }
