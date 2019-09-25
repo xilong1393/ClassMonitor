@@ -99,6 +99,12 @@
     <Compile Include="Interfaces\GroupScheduleForm.Designer.cs">
       <DependentUpon>GroupScheduleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ListLocalDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\ListLocalDataForm.Designer.cs">
+      <DependentUpon>ListLocalDataForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,7 +122,7 @@
     <Compile Include="Model\ClassroomAgentStatus.cs" />
     <Compile Include="Model\ClassroomEngineStatus.cs" />
     <Compile Include="Model\ClassroomGroup.cs" />
-    <Compile Include="Model\ClassroomInfo.cs" />
+    <Compile Include="Model\ClassroomInfoView.cs" />
     <Compile Include="Model\ClassroomView.cs" />
     <Compile Include="Model\ParameterForm\GetClassroomListForm.cs" />
     <Compile Include="Model\ParameterForm\UserLoginForm.cs" />
@@ -140,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\GroupScheduleForm.resx">
       <DependentUpon>GroupScheduleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\ListLocalDataForm.resx">
+      <DependentUpon>ListLocalDataForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

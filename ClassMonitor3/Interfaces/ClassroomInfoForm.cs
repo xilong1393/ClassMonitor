@@ -5,10 +5,10 @@ namespace ClassMonitor3.Interfaces
 {
     public partial class ClassroomInfoForm : Form
     {
-        public ClassroomInfoForm(ClassroomView classroomView)
+        public ClassroomInfoForm(ClassroomInfoView classroomInfoView)
         {
             InitializeComponent();
-            propertyGrid1.SelectedObject = classroomView;
+            propertyGrid1.SelectedObject = classroomInfoView;
         }
     }
 }

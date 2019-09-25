@@ -18,9 +18,6 @@ namespace ClassMonitor3.Interfaces
         
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            var mainForm = new MainForm();
-            mainForm.ShowDialog();
             this.Close();
         }
 

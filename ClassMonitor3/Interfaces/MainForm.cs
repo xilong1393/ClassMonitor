@@ -321,8 +321,8 @@ namespace ClassMonitor3.Interfaces
 
                 if (response.IsSuccessStatusCode)
                 {
-                    ClassroomView classroomView = await response.Content.ReadAsAsync<ClassroomView>();
-                    ClassroomInfoForm classroomInfoForm = new ClassroomInfoForm(classroomView);
+                    ClassroomInfoView classroomInfoView = await response.Content.ReadAsAsync<ClassroomInfoView>();
+                    ClassroomInfoForm classroomInfoForm = new ClassroomInfoForm(classroomInfoView);
                     classroomInfoForm.Show();
                 }
                 else
@@ -517,8 +517,11 @@ namespace ClassMonitor3.Interfaces
 
                 if (response.IsSuccessStatusCode)
                 {
-                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                    MessageBox.Show("succeeded!");
+                    ExecutionResult result = await response.Content.ReadAsAsync<ExecutionResult>();
+                    string resultObj = result.Obj.ToString();
+                    List<string> list = JsonConvert.DeserializeObject<List<string>>(resultObj);
+                    ListLocalDataForm cs = new ListLocalDataForm(list);
+                    cs.Show();
                 }
                 else
                 {
