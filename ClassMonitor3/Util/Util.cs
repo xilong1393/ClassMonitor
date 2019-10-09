@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace ClassMonitor3.Util
@@ -94,6 +95,41 @@ namespace ClassMonitor3.Util
                 }
             }
             throw new Exception("No network adapters with an IPv4 address in the system!");
+        }
+
+        public static string formatClassName(string originalString)
+        {
+            string formatString = originalString;
+            try
+            {
+                Regex rex = new Regex(@"[^\w|\.|\[|\]|\(|\)|\-]+");
+                formatString = rex.Replace(originalString, " ");
+            }
+            catch (Exception ex)
+            {
+                formatString = originalString;
+            }
+            return formatString;
+        }
+
+        public static int[] SixtyArray()
+        {
+            int[] result = new int[60];
+            for (int i = 0; i < 60; i++)
+            {
+                result[i] = i;
+            }
+            return result;
+        }
+
+        public static int[] TwentyFourArray()
+        {
+            int[] result = new int[24];
+            for (int i = 0; i < 24; i++)
+            {
+                result[i] = i;
+            }
+            return result;
         }
     }
 }

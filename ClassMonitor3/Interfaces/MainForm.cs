@@ -467,7 +467,8 @@ namespace ClassMonitor3.Interfaces
             else
             {
                 int row = dataGridView.SelectedRows[0].Index;
-                MessageBox.Show(list[row].ClassroomID.ToString());
+                StartTestCourseForm form = new StartTestCourseForm(list[row].ClassroomID);
+                form.Show();
             }
         }
 
@@ -491,7 +492,6 @@ namespace ClassMonitor3.Interfaces
                     DataTable list = JsonConvert.DeserializeObject<DataTable>((string)result.Obj);
                     CheckScheduleForm cs = new CheckScheduleForm(list);
                     cs.Show();
-                    //MessageBox.Show("succeeded!");
                 }
                 else
                 {
@@ -520,7 +520,7 @@ namespace ClassMonitor3.Interfaces
                     ExecutionResult result = await response.Content.ReadAsAsync<ExecutionResult>();
                     string resultObj = result.Obj.ToString();
                     List<string> list = JsonConvert.DeserializeObject<List<string>>(resultObj);
-                    ListLocalDataForm cs = new ListLocalDataForm(list);
+                    ListLocalDataForm cs = new ListLocalDataForm(list, classroomID);
                     cs.Show();
                 }
                 else

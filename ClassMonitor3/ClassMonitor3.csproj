@@ -117,6 +117,12 @@
     <Compile Include="Interfaces\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\StartTestCourseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\StartTestCourseForm.Designer.cs">
+      <DependentUpon>StartTestCourseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\ClassRecordingWithSchedule.cs" />
     <Compile Include="Model\Classroom.cs" />
     <Compile Include="Model\ClassroomAgentStatus.cs" />
@@ -126,6 +132,11 @@
     <Compile Include="Model\ClassroomView.cs" />
     <Compile Include="Model\ParameterForm\GetClassroomListForm.cs" />
     <Compile Include="Model\ParameterForm\UserLoginForm.cs" />
+    <Compile Include="Model\TestCourseModel\ClassSchedule.cs" />
+    <Compile Include="Model\TestCourseModel\ClassType.cs" />
+    <Compile Include="Model\TestCourseModel\FileServer.cs" />
+    <Compile Include="Model\TestCourseModel\Quarter.cs" />
+    <Compile Include="Model\TestCourseModel\TestCourseReturnModel.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\UserLoginLog.cs" />
     <Compile Include="Model\UserOperationLog.cs" />
@@ -155,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaces\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\StartTestCourseForm.resx">
+      <DependentUpon>StartTestCourseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
