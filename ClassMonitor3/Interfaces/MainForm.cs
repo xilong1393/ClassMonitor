@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -283,6 +285,7 @@ namespace ClassMonitor3.Interfaces
                     }
                     catch (Exception ex)
                     {
+                        MessageBox.Show(ex.ToString());
                         Action action = () => { label.Text = ex.Message; label.BackColor = Color.Red; };
                         label.SafeInvoke(action, true);
                     }
@@ -293,7 +296,29 @@ namespace ClassMonitor3.Interfaces
                 }
             }, tokenSource.Token);
         }
+        public async Task<Image> GetImageAsync(string url)
+        {
+            var tcs = new TaskCompletionSource<Image>();
+            Image webImage = null;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null)
+                .ContinueWith(task =>
+                {
+                    var webResponse = (HttpWebResponse)task.Result;
+                    Stream responseStream = webResponse.GetResponseStream();
+                    if (webResponse.ContentEncoding.ToLower().Contains("gzip"))
+                        responseStream = new GZipStream(responseStream, CompressionMode.Decompress);
+                    else if (webResponse.ContentEncoding.ToLower().Contains("deflate"))
+                        responseStream = new DeflateStream(responseStream, CompressionMode.Decompress);
 
+                    if (responseStream != null) webImage = Image.FromStream(responseStream);
+                    tcs.TrySetResult(webImage);
+                    webResponse.Close();
+                    responseStream.Close();
+                });
+            return tcs.Task.Result;
+        }
         private void label3_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Do You Want to Logout?", "Logout", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
@@ -317,7 +342,7 @@ namespace ClassMonitor3.Interfaces
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                HttpResponseMessage response = await client.GetAsync("api/Operation/ClassroomInfo?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+                HttpResponseMessage response = await client.GetAsync("api/Operation/PushPPCConfig?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
 
                 if (response.IsSuccessStatusCode)
                 {

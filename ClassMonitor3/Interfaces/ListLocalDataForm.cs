@@ -71,6 +71,15 @@ namespace ClassMonitor3.Interfaces
                 checkedListBox1.Items.Add(l, l.Checked);
         }
 
+        private void refreshListAfterDelete(LocalData[] ld) {
+            checkedListBox1.Items.Clear();
+            foreach (LocalData l in ld)
+            {
+                if(!l.Checked)
+                    checkedListBox1.Items.Add(l);
+            }
+        }
+
         private void SortSelect_Click(object sender, EventArgs e)
         {
             var selectedlist = localData.Where(o => o.Checked).OrderBy(o => o.Value.ToLower()).ToArray();
@@ -156,6 +165,7 @@ namespace ClassMonitor3.Interfaces
             {
                 //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
                 MessageBox.Show("succeeded!");
+                refreshListAfterDelete(localData);
             }
             else
             {

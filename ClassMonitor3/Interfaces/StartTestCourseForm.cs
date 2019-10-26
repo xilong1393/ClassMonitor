@@ -18,10 +18,12 @@ namespace ClassMonitor3.Interfaces
     public partial class StartTestCourseForm : Form
     {
         //private TestCourseReturnModel testCourseReturnModel;
+        int classroomId;
         public StartTestCourseForm(int classroomID)
         {
             InitializeComponent();
             this.Text = classroomID + "";
+            classroomId = classroomID;
             fillModel(classroomID);
 
         }
@@ -73,13 +75,52 @@ namespace ClassMonitor3.Interfaces
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_ClickAsync(object sender, EventArgs e)
         {
             if (comboBox1.SelectedIndex == 0 || comboBox5.SelectedIndex == 0||string.IsNullOrWhiteSpace(textBox2.Text)) {
                 MessageBox.Show("illegal argument!");
                 return;
             }
-            
+            ClassSchedule classSchedule = new ClassSchedule();
+            classSchedule.ClassStartTime = DateTime.Now;
+
+            classSchedule.ClassName = textBox1.Text.Replace((char)92, ' ');
+            classSchedule.ClassroomID = classroomId;
+            classSchedule.ClassID = -1;
+            classSchedule.ClassLength = comboBox5.SelectedIndex * 60;
+            classSchedule.ClassTypeID = Convert.ToInt32(comboBox2.SelectedValue);
+            classSchedule.IsPeriodicCourse = false;
+            classSchedule.FileServerID = Convert.ToInt32(comboBox3.SelectedValue);
+            classSchedule.InstructorName = textBox2.Text;
+            classSchedule.Status = 'E';
+            classSchedule.QuarterID = Convert.ToInt32(comboBox1.SelectedValue);
+            classSchedule.IsPostDelay = false;
+            //classSchedule.Email = null;
+
+            var client = Helper.CreateClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = await client.PostAsJsonAsync("api/Operation/SubmitStartTestCourse", classSchedule);
+            if (response.IsSuccessStatusCode)
+            {
+                //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                MessageBox.Show("succeeded!");
+            }
+            else
+            {
+                //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                MessageBox.Show("failure!");
+            }
+        }
+
+        private String FormatDataDir(int classTypeID, String DataDir)
+        {
+            if (String.IsNullOrEmpty(DataDir) == false)
+            {
+                DataDir = DataDir.Replace(' ', '-');
+                DataDir = @"TestCourse/" + DataDir;
+            }
+            return DataDir;
         }
     }
 }
