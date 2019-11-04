@@ -105,7 +105,7 @@ namespace ClassMonitor3.Util
                 Regex rex = new Regex(@"[^\w|\.|\[|\]|\(|\)|\-]+");
                 formatString = rex.Replace(originalString, " ");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 formatString = originalString;
             }
