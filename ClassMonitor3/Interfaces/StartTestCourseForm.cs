@@ -18,13 +18,13 @@ namespace ClassMonitor3.Interfaces
     public partial class StartTestCourseForm : Form
     {
         //private TestCourseReturnModel testCourseReturnModel;
-        int classroomId;
-        public StartTestCourseForm(int classroomID)
+        ClassroomView classroomView;
+        public StartTestCourseForm(ClassroomView classroomView)
         {
             InitializeComponent();
-            this.Text = classroomID + "";
-            classroomId = classroomID;
-            fillModel(classroomID);
+            this.classroomView = classroomView;
+            this.Text = classroomView.ClassroomID + "";
+            fillModel(classroomView.ClassroomID);
 
         }
         public async void fillModel(int classroomID) {
@@ -46,7 +46,7 @@ namespace ClassMonitor3.Interfaces
                 comboBox3.DataSource = testCourseReturnModel.Flist;
                 comboBox3.DisplayMember = "FileServerName";
                 comboBox3.ValueMember = "FileServerID";
-                SetDefaultNameforTestCourse(testCourseReturnModel.Classroom);
+                SetDefaultNameforTestCourse(classroomView);
 
 
                 comboBox4.DataSource = Util.Helper.TwentyFourArray();
@@ -64,7 +64,7 @@ namespace ClassMonitor3.Interfaces
             }
         }
 
-        private void SetDefaultNameforTestCourse(Classroom classroom)
+        private void SetDefaultNameforTestCourse(ClassroomView classroom)
         {
             string sClassroomName = classroom.ClassroomName;
 
@@ -85,7 +85,7 @@ namespace ClassMonitor3.Interfaces
             classSchedule.ClassStartTime = DateTime.Now;
 
             classSchedule.ClassName = textBox1.Text.Replace((char)92, ' ');
-            classSchedule.ClassroomID = classroomId;
+            classSchedule.ClassroomID = classroomView.ClassroomID;
             classSchedule.ClassID = -1;
             classSchedule.ClassLength = comboBox5.SelectedIndex * 60;
             classSchedule.ClassTypeID = Convert.ToInt32(comboBox2.SelectedValue);
@@ -121,6 +121,11 @@ namespace ClassMonitor3.Interfaces
                 DataDir = @"TestCourse/" + DataDir;
             }
             return DataDir;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetDefaultNameforTestCourse(classroomView);
         }
     }
 }

@@ -82,6 +82,7 @@ namespace ClassMonitor3.Interfaces
 
         private void createPanel(string text)
         {
+            disposeWave();
             flRightPanel.Controls.Clear();
             foreach (CancellationTokenSource cts in tokenSourceList)
                 cts.Cancel();
@@ -114,7 +115,6 @@ namespace ClassMonitor3.Interfaces
                 detail.Width = 42;
                 detail.TextAlign = ContentAlignment.MiddleCenter;
                 detail.LinkBehavior = LinkBehavior.NeverUnderline;
-                //b.AutoSize = true;
                 detail.BorderStyle = BorderStyle.FixedSingle;
                 detail.Text = "Detail";
                 detail.LinkColor = Color.Black;
@@ -124,15 +124,16 @@ namespace ClassMonitor3.Interfaces
                 operationPanel.Controls.Add(detail);
 
                 LinkLabel sound = new LinkLabel();
+                sound.Tag = i;
                 sound.Height = 23;
                 sound.Width = 46;
                 sound.TextAlign = ContentAlignment.MiddleCenter;
                 sound.LinkBehavior = LinkBehavior.NeverUnderline;
-                //sound.AutoSize = true;
                 sound.BorderStyle = BorderStyle.FixedSingle;
                 sound.Text = "Sound";
                 sound.LinkColor = Color.Black;
                 sound.Click += Play_SoundAsync;
+                //sound.Enabled = false;
                 operationPanel.Controls.Add(sound);
 
                 ComboBox cb = new ComboBox();
@@ -158,31 +159,25 @@ namespace ClassMonitor3.Interfaces
                 panel.Controls.Add(label);
                 panel.Tag = TokenSource;
                 flRightPanel.Controls.Add(panel);
-                tasks.Add(UpdatePictureBox(p, label, panel, text));
+                tasks.Add(UpdatePictureBox(p, label, panel, text,i));
             }
         }
 
-        private async Task getWaveAsync()
+        private async Task GetWave(int i)
         {
-            HttpClient client = Helper.CreateClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-            HttpResponseMessage response = await client.GetAsync("api/Operation/GetAudioData?classroomID=376&sessionID=111111");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                ExecutionResult result = await response.Content.ReadAsAsync<ExecutionResult>();
-                byte[] bytes = Convert.FromBase64String(result.Obj.ToString());
-
+                ClassroomData classroomData = new ClassroomData(list[i].PPCPublicIP, list[i].PPCPort);
+                string xml = await classroomData.GetAudioData(null, null, list[i].ClassroomID, null, null);
+                byte[] bytes = await classroomData.GetBinary(xml);
                 Stream t = new FileStream("video.wav", FileMode.Create);
                 BinaryWriter b = new BinaryWriter(t);
                 b.Write(bytes);
                 t.Close();
             }
-            else
+            catch (Exception)
             {
-                // MessageBox.Show(response.Content.ReadAsAsync().Result);
+                throw;
             }
         }
         IWavePlayer waveOutDevice = null;
@@ -190,54 +185,51 @@ namespace ClassMonitor3.Interfaces
 
         private async void Play_SoundAsync(object sender, EventArgs e)
         {
+            LinkLabel b = (LinkLabel)(sender);
             try
             {
-                LinkLabel b = (LinkLabel)(sender);
                 if (b.Text == "Sound")
                 {
                     b.Text = "Stop";
+                    b.BackColor = Color.Gray;
                     Panel p = (Panel)b.Parent.Parent.Parent;
                     foreach (LinkLabel l in Helper.GetAll(p, b.GetType()).Where(a => a.Text != "Detail" && a != b))
                     {
                         l.Text = "Sound";
                     }
                     disposeWave();
-                    await getWaveAsync();
+                    await GetWave((int)b.Tag);
                     if (waveOutDevice == null) waveOutDevice = new WaveOut();
                     if (audioFileReader == null) audioFileReader = new AudioFileReader(@"video.wav");
                     waveOutDevice.Init(audioFileReader);
+                    waveOutDevice.PlaybackStopped += (send, args) => AutoPlaySoundAsync(send, args, (int)b.Tag);
                     waveOutDevice.Play();
-                    waveOutDevice.PlaybackStopped += (send, args) => AutoPlaySoundAsync(send, args, b);
-                    
-                    //LogService logService = new LogService();
-                    //UserOperationLog userOperationLog = new UserOperationLog();
-                    //userOperationLog.SessionID = LoginInfo.sessionID;
-                    //userOperationLog.Operation = "Play_Sound";
-                    //userOperationLog.OperationTime = DateTime.Now;
-                    //logService.LogUserOperation(userOperationLog);
                 }
                 else
                 {
                     b.Text = "Sound";
-                    waveOutDevice.Stop();
+                    waveOutDevice?.Stop();
                     audioFileReader?.Dispose();
-                    waveOutDevice.Dispose();
+                    waveOutDevice?.Dispose();
                     audioFileReader = null;
                     waveOutDevice = null;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
+                //throw;
+                Action action = () => { b.BackColor = Color.Red; };
+                b.SafeInvoke(action, true);
             }
         }
 
-        private async void AutoPlaySoundAsync(object sender, EventArgs e, LinkLabel lb)
+        private async void AutoPlaySoundAsync(object sender, EventArgs e, int i)
         {
             disposeWave();
-            await getWaveAsync();
+            await GetWave(i);
             if (waveOutDevice == null) waveOutDevice = new WaveOut();
-            waveOutDevice.PlaybackStopped += (send, args) => AutoPlaySoundAsync(send, args, lb);
+            waveOutDevice.PlaybackStopped += (send, args) => AutoPlaySoundAsync(send, args, i);
             if (audioFileReader == null) audioFileReader = new AudioFileReader(@"video.wav");
             waveOutDevice.Init(audioFileReader);
             waveOutDevice.Play();
@@ -263,7 +255,7 @@ namespace ClassMonitor3.Interfaces
             tokenSourceList.Remove(tokenSource);
             tasks.RemoveAt(taskIndex);
             ((Panel)cb.Parent.Parent).Tag = TokenSource;
-            tasks.Insert(taskIndex, UpdatePictureBox((PictureBox)(Helper.GetAll(cb.Parent.Parent, typeof(PictureBox)).First()), (Label)Helper.GetAll(cb.Parent.Parent, typeof(Label)).First(), (Panel)cb.Parent.Parent, cb.Text));
+            tasks.Insert(taskIndex, UpdatePictureBox((PictureBox)(Helper.GetAll(cb.Parent.Parent, typeof(PictureBox)).First()), (Label)Helper.GetAll(cb.Parent.Parent, typeof(Label)).First(), (Panel)cb.Parent.Parent, cb.Text, taskIndex));
         }
         private void Panel_Pop(object sender, EventArgs e)
         {
@@ -296,101 +288,41 @@ namespace ClassMonitor3.Interfaces
             }
         }
 
-        private Task UpdatePictureBox(PictureBox p, Label label, Panel panel, string text)
+        private Task UpdatePictureBox(PictureBox p, Label label, Panel panel, string text, int i)
         {
             CancellationTokenSource tokenSource = (CancellationTokenSource)panel.Tag;
             return Task.Run(async () =>
             {
-               // int counter = 0;
                 while (true)
                 {
                     if (tokenSource.Token.IsCancellationRequested)
                     {
                         break;
                     }
-
-                    HttpClient client = Helper.CreateClient();
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                    HttpResponseMessage response = await client.GetAsync("api/Operation/GetImageString?classroomID=376&sessionID=111111");
-
-                    if (response.IsSuccessStatusCode)
+                    try
                     {
-                        try
+                        ClassroomData data = new ClassroomData(list[i].PPCPublicIP, list[i].PPCPort);
+                        string xml = await data.GetImageString(null, null, list[i].ClassroomID, null, null);
+                        byte[] bytes = await data.GetBinary(xml);
+                        using (MemoryStream loadStream = new MemoryStream(bytes, 0, bytes.Length))
                         {
-                            ExecutionResult result = await response.Content.ReadAsAsync<ExecutionResult>();
-                            byte[] bytes = Convert.FromBase64String(result.Obj.ToString());
-                            using (MemoryStream loadStream = new MemoryStream(bytes, 0, bytes.Length))
-                            {
-                                Action action = () => { p.Image = Image.FromStream(loadStream); };
-                                p.SafeInvoke(action, true);
-                                Thread.Sleep(2000);
-                            }
+                            Action action = () => { p.Image = Image.FromStream(loadStream); };
+                            p.SafeInvoke(action, true);
+                            Thread.Sleep(2000);
                         }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.ToString());
-                            Action action = () => { label.Text = ex.Message; label.BackColor = Color.Red; };
-                            label.SafeInvoke(action, true);
-                        }
-                        finally
-                        {
-                            p.Image = null;
-                        }
-
-                        //Image image = Base64ToImage(result.Obj.ToString());
-                        //pictureBox1.Image = image;
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("error");
+                        //MessageBox.Show(ex.ToString());
+                        Action action = () => { label.Text = ex.Message; label.BackColor = Color.Red; };
+                        label.SafeInvoke(action, true);
                     }
-
-                    //try
-                    //{
-                    //    using (FileStream loadStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
-                    //    {
-                    //        Action action = () => { p.Image = Image.FromStream(loadStream); };
-                    //        p.SafeInvoke(action, true);
-                    //        Thread.Sleep(1000);
-                    //    }
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    MessageBox.Show(ex.ToString());
-                    //    Action action = () => { label.Text = ex.Message; label.BackColor = Color.Red; };
-                    //    label.SafeInvoke(action, true);
-                    //}
-                    //finally
-                    //{
-                    //    p.Image = null;
-                    //}
+                    finally
+                    {
+                        p.Image = null;
+                    }
                 }
             }, tokenSource.Token);
-        }
-        public async Task<Image> GetImageAsync(string url)
-        {
-            var tcs = new TaskCompletionSource<Image>();
-            Image webImage = null;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null)
-                .ContinueWith(task =>
-                {
-                    var webResponse = (HttpWebResponse)task.Result;
-                    Stream responseStream = webResponse.GetResponseStream();
-                    if (webResponse.ContentEncoding.ToLower().Contains("gzip"))
-                        responseStream = new GZipStream(responseStream, CompressionMode.Decompress);
-                    else if (webResponse.ContentEncoding.ToLower().Contains("deflate"))
-                        responseStream = new DeflateStream(responseStream, CompressionMode.Decompress);
-
-                    if (responseStream != null) webImage = Image.FromStream(responseStream);
-                    tcs.TrySetResult(webImage);
-                    webResponse.Close();
-                    responseStream.Close();
-                });
-            return tcs.Task.Result;
         }
         private void label3_Click(object sender, EventArgs e)
         {
@@ -403,8 +335,6 @@ namespace ClassMonitor3.Interfaces
 
         private async void button11_ClickAsync(object sender, EventArgs e)
         {
-            
-
             if (dataGridView.SelectedRows.Count == 0)
                 MessageBox.Show("Please select a classroom");
             else
@@ -449,11 +379,12 @@ namespace ClassMonitor3.Interfaces
 
             createPanel(menuCB.SelectedItem.ToString());
         }
-        private async Task LoadClassroomList(string sessionID, int groupID) {
+        private async Task LoadClassroomList(string sessionID, int groupID)
+        {
             var client = Helper.CreateClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var tuple = new { sessionID= sessionID, groupID= groupID};
+            var tuple = new { sessionID = sessionID, groupID = groupID };
             HttpResponseMessage response = await client.PostAsJsonAsync("api/classroom/GetClassroomListByGroupID", tuple);
             if (response.IsSuccessStatusCode)
             {
@@ -565,7 +496,7 @@ namespace ClassMonitor3.Interfaces
             else
             {
                 int row = dataGridView.SelectedRows[0].Index;
-                StartTestCourseForm form = new StartTestCourseForm(list[row].ClassroomID);
+                StartTestCourseForm form = new StartTestCourseForm(list[row]);
                 form.Show();
             }
         }
@@ -743,7 +674,6 @@ namespace ClassMonitor3.Interfaces
                     {
                         MessageBox.Show("failure!");
                     }
-                   
                 }
                 else
                 {

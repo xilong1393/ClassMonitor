@@ -12,8 +12,11 @@ namespace ClassMonitor3.Model
         [Browsable(false)]
         public int ClassroomID { get; set; }
         public string ClassroomName { get; set; }
+        [Browsable(false)]
+        public string PPCPublicIP { get; set; }
+        [Browsable(false)]
+        public int PPCPort { get; set; }
         public string EngineStatus { get; set; }
-
         public string AgentStatus { get; set; }
         [DisplayName("PPC")]
         public string PPCConnectionStatus { get; set; }
