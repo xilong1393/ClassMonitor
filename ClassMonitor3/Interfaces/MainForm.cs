@@ -345,7 +345,7 @@ namespace ClassMonitor3.Interfaces
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                HttpResponseMessage response = await client.GetAsync("api/Operation/PushPPCConfig?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+                HttpResponseMessage response = await client.GetAsync("api/Operation/ClassroomInfo?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -410,83 +410,108 @@ namespace ClassMonitor3.Interfaces
 
         private async void btnStopCourse_ClickAsync(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
-                MessageBox.Show("Please select a classroom");
-            else
+            try
             {
-                int row = dataGridView.SelectedRows[0].Index;
-                int classroomID = list[row].ClassroomID;
-                var client = Helper.CreateClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                HttpResponseMessage response = await client.GetAsync("api/Operation/StopRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                    MessageBox.Show("succeeded!");
-                }
+                if (dataGridView.SelectedRows.Count == 0)
+                    MessageBox.Show("Please select a classroom");
                 else
                 {
-                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
-                    MessageBox.Show("failure!");
+                    int row = dataGridView.SelectedRows[0].Index;
+                    int classroomID = list[row].ClassroomID;
+                    var client = Helper.CreateClient();
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/StopRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                        MessageBox.Show("succeeded!");
+                    }
+                    else
+                    {
+                        //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                        MessageBox.Show("failure!");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private async void btnPushSchedule_ClickAsync(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
-                MessageBox.Show("Please select a classroom");
-            else
+            try
             {
-                int row = dataGridView.SelectedRows[0].Index;
-                int classroomID = list[row].ClassroomID;
-                var client = Helper.CreateClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                HttpResponseMessage response = await client.GetAsync("api/Operation/PushSchedule?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
-                
-                if (response.IsSuccessStatusCode)
-                {
-                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                    MessageBox.Show("succeeded!");
-                }
+                if (dataGridView.SelectedRows.Count == 0)
+                    MessageBox.Show("Please select a classroom");
                 else
                 {
-                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
-                    MessageBox.Show("failure!");
+                    int row = dataGridView.SelectedRows[0].Index;
+                    int classroomID = list[row].ClassroomID;
+                    var client = Helper.CreateClient();
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/PushSchedule?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                        MessageBox.Show("succeeded!");
+                    }
+                    else
+                    {
+                        //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                        MessageBox.Show("failure!");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private async void button2_ClickAsync(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
-                MessageBox.Show("Please select a classroom");
-            else
+            try
             {
-                int row = dataGridView.SelectedRows[0].Index;
-                int classroomID = list[row].ClassroomID;
-                var client = Helper.CreateClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                HttpResponseMessage response = await client.GetAsync("api/Operation/AbortRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                    MessageBox.Show("succeeded!");
-                }
+                if (dataGridView.SelectedRows.Count == 0)
+                    MessageBox.Show("Please select a classroom");
                 else
                 {
-                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
-                    MessageBox.Show("failure!");
+                    int row = dataGridView.SelectedRows[0].Index;
+                    int classroomID = list[row].ClassroomID;
+                    var client = Helper.CreateClient();
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/AbortRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                        MessageBox.Show("succeeded!");
+                    }
+                    else
+                    {
+                        //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                        MessageBox.Show("failure!");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -503,31 +528,39 @@ namespace ClassMonitor3.Interfaces
 
         private async void button6_ClickAsync(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
-                MessageBox.Show("Please select a classroom");
-            else
+            try
             {
-                int row = dataGridView.SelectedRows[0].Index;
-                int classroomID = list[row].ClassroomID;
-                var client = Helper.CreateClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                HttpResponseMessage response = await client.GetAsync("api/Operation/CheckSchedule?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                    DataTable list = JsonConvert.DeserializeObject<DataTable>((string)result.Obj);
-                    CheckScheduleForm cs = new CheckScheduleForm(list);
-                    cs.Show();
-                }
+                if (dataGridView.SelectedRows.Count == 0)
+                    MessageBox.Show("Please select a classroom");
                 else
                 {
-                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
-                    MessageBox.Show("failure!");
+                    int row = dataGridView.SelectedRows[0].Index;
+                    int classroomID = list[row].ClassroomID;
+                    var client = Helper.CreateClient();
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/CheckSchedule?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ExecutionResult result = await response.Content.ReadAsAsync<ExecutionResult>();
+                        DataTable list = JsonConvert.DeserializeObject<DataTable>((string)result.Obj);
+                        CheckScheduleForm cs = new CheckScheduleForm(list);
+                        cs.Show();
+                    }
+                    else
+                    {
+                        //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                        MessageBox.Show("failure!");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private async void button10_ClickAsync(object sender, EventArgs e)
@@ -571,114 +604,144 @@ namespace ClassMonitor3.Interfaces
 
         private async void button5_ClickAsync(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
-                MessageBox.Show("Please select a classroom");
-            else
+            try
             {
-                int row = dataGridView.SelectedRows[0].Index;
-                int classroomID = list[row].ClassroomID;
-                var client = Helper.CreateClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                HttpResponseMessage response = await client.GetAsync("api/Operation/PushPPCConfig?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                    MessageBox.Show("succeeded!");
-                }
+                if (dataGridView.SelectedRows.Count == 0)
+                    MessageBox.Show("Please select a classroom");
                 else
                 {
-                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
-                    MessageBox.Show("failure!");
+                    int row = dataGridView.SelectedRows[0].Index;
+                    int classroomID = list[row].ClassroomID;
+                    var client = Helper.CreateClient();
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/PushPPCConfig?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                        MessageBox.Show("succeeded!");
+                    }
+                    else
+                    {
+                        //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                        MessageBox.Show("failure!");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private async void button8_ClickAsync(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
-                MessageBox.Show("Please select a classroom");
-            else
+            try
             {
-                int row = dataGridView.SelectedRows[0].Index;
-                int classroomID = list[row].ClassroomID;
-                var client = Helper.CreateClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                HttpResponseMessage response = await client.GetAsync("api/Operation/RebootPPC?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                    MessageBox.Show("succeeded!");
-                }
+                if (dataGridView.SelectedRows.Count == 0)
+                    MessageBox.Show("Please select a classroom");
                 else
                 {
-                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
-                    MessageBox.Show("failure!");
+                    int row = dataGridView.SelectedRows[0].Index;
+                    int classroomID = list[row].ClassroomID;
+                    var client = Helper.CreateClient();
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/RebootPPC?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                        MessageBox.Show("succeeded!");
+                    }
+                    else
+                    {
+                        //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                        MessageBox.Show("failure!");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private async void button9_ClickAsync(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 0)
-                MessageBox.Show("Please select a classroom");
-            else
+            try
             {
-                int row = dataGridView.SelectedRows[0].Index;
-                int classroomID = list[row].ClassroomID;
-                var client = Helper.CreateClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                HttpResponseMessage response = await client.GetAsync("api/Operation/RebootIPC?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                    MessageBox.Show("succeeded!");
-                }
+                if (dataGridView.SelectedRows.Count == 0)
+                    MessageBox.Show("Please select a classroom");
                 else
                 {
-                    //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
-                    MessageBox.Show("failure!");
+                    int row = dataGridView.SelectedRows[0].Index;
+                    int classroomID = list[row].ClassroomID;
+                    var client = Helper.CreateClient();
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/RebootIPC?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                        MessageBox.Show("succeeded!");
+                    }
+                    else
+                    {
+                        //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                        MessageBox.Show("failure!");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private async void button7_ClickAsync(object sender, EventArgs e)
         {
-
-            if (comboBox.Items.Count == 0)
-                MessageBox.Show("there is no group");
-            else
+            try
             {
-                int groupID = (int)comboBox.SelectedValue;
-                var client = Helper.CreateClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.GetAsync("api/Operation/GroupSchedule?groupID=" + groupID + "&sessionID=" + LoginInfo.sessionID);
-                if (response.IsSuccessStatusCode)
+                if (comboBox.Items.Count == 0)
+                    MessageBox.Show("there is no group");
+                else
                 {
-                    try
+                    int groupID = (int)comboBox.SelectedValue;
+                    var client = Helper.CreateClient();
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/GroupSchedule?groupID=" + groupID + "&sessionID=" + LoginInfo.sessionID);
+                    if (response.IsSuccessStatusCode)
                     {
-                        DataTable result = await response.Content.ReadAsAsync<DataTable>();
-                        GroupScheduleForm gs = new GroupScheduleForm(result);
-                        gs.Show();
+                        try
+                        {
+                            DataTable result = await response.Content.ReadAsAsync<DataTable>();
+                            GroupScheduleForm gs = new GroupScheduleForm(result);
+                            gs.Show();
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("failure!");
+                        }
                     }
-                    catch (Exception)
+                    else
                     {
                         MessageBox.Show("failure!");
                     }
                 }
-                else
-                {
-                    MessageBox.Show("failure!");
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }
