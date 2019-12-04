@@ -22,7 +22,7 @@ namespace ClassMonitor3.Model
         //public int IPCPort { get; set; }
         //public int WBNumber { get; set; }
         //public int Status { get; set; }
-        [Browsable(false)]
+        //[Browsable(false)]
         public int ClassroomID { get; set; }
         public string ClassroomName { get; set; }
         public string EngineStatus { get; set; }

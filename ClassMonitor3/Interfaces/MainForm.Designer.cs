@@ -154,7 +154,7 @@ namespace ClassMonitor3.Interfaces
             this.button7.TabIndex = 1;
             this.button7.Text = "Group Schedule";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_ClickAsync);
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button6
             // 

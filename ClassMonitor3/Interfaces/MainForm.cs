@@ -707,7 +707,7 @@ namespace ClassMonitor3.Interfaces
             
         }
 
-        private async void button7_ClickAsync(object sender, EventArgs e)
+        private void button7_Click(object sender, EventArgs e)
         {
             try
             {
@@ -716,27 +716,11 @@ namespace ClassMonitor3.Interfaces
                 else
                 {
                     int groupID = (int)comboBox.SelectedValue;
-                    var client = Helper.CreateClient();
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    HttpResponseMessage response = await client.GetAsync("api/Operation/GroupSchedule?groupID=" + groupID + "&sessionID=" + LoginInfo.sessionID);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        try
-                        {
-                            DataTable result = await response.Content.ReadAsAsync<DataTable>();
-                            GroupScheduleForm gs = new GroupScheduleForm(result);
-                            gs.Show();
-                        }
-                        catch (Exception)
-                        {
-                            MessageBox.Show("failure!");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("failure!");
-                    }
+
+                    GroupScheduleForm gs = new GroupScheduleForm(groupID);
+                    gs.Show();
+
+
                 }
             }
             catch (Exception ex)
