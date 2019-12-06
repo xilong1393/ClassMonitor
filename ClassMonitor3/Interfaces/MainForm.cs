@@ -413,25 +413,53 @@ namespace ClassMonitor3.Interfaces
             try
             {
                 if (dataGridView.SelectedRows.Count == 0)
-                    MessageBox.Show("Please select a classroom");
+                    MessageBox.Show("Please select a classroom first");
                 else
                 {
                     int row = dataGridView.SelectedRows[0].Index;
                     int classroomID = list[row].ClassroomID;
+
                     var client = Helper.CreateClient();
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                    HttpResponseMessage response = await client.GetAsync("api/Operation/StopRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/GetClassroomStatusbyClassroomID?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                        MessageBox.Show("succeeded!");
+                        ClassroomEngineAgentStatus status = await response.Content.ReadAsAsync<ClassroomEngineAgentStatus>();
+                        string prompt = "";
+                        if (status.EngineStatus != "RECORDING A LECTURE" || status.ClassTypeID == null) {
+                            MessageBox.Show("There is not recording in this room!");
+                            return;
+                        }
+                        else
+                            prompt = GetStopPromptString(status);
+
+                        if (MessageBox.Show(prompt, "",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            client.DefaultRequestHeaders.Accept.Clear();
+                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            HttpResponseMessage resp = await client.GetAsync("api/Operation/StopRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                            if (resp.IsSuccessStatusCode)
+                            {
+                                //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                                MessageBox.Show("succeeded!");
+                            }
+                            else
+                            {
+                                //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                                MessageBox.Show("failure!");
+                            }
+                        }
                     }
                     else
                     {
-                        //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
                         MessageBox.Show("failure!");
                     }
                 }
@@ -489,20 +517,60 @@ namespace ClassMonitor3.Interfaces
                 {
                     int row = dataGridView.SelectedRows[0].Index;
                     int classroomID = list[row].ClassroomID;
+
                     var client = Helper.CreateClient();
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
-                    HttpResponseMessage response = await client.GetAsync("api/Operation/AbortRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+                    HttpResponseMessage response = await client.GetAsync("api/Operation/GetClassroomStatusbyClassroomID?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
-                        MessageBox.Show("succeeded!");
+                        ClassroomEngineAgentStatus status = await response.Content.ReadAsAsync<ClassroomEngineAgentStatus>();
+                        string prompt = "";
+                        string input = "";
+                        if (status.EngineStatus != "RECORDING A LECTURE" || status.ClassTypeID == null)
+                        {
+                            MessageBox.Show("There is not recording in this room!");
+                            return;
+                        }
+                        else if (status.ClassTypeID == 3)
+                        {
+                            prompt = GetAbortPromptString(status, status.ClassTypeID == 3, ref input);
+                            if (MessageBox.Show(prompt, "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            prompt = GetAbortPromptString(status, status.ClassTypeID == 3, ref input);
+
+                            string myinput = Microsoft.VisualBasic.Interaction.InputBox(prompt,
+                               "confirm", "", -1, -1);
+                            MessageBox.Show(myinput + ": " + input);
+
+                            if (myinput != input || myinput == "")
+                                return;
+                        }
+
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        //var tuple = new { sessionID = LoginInfo.sessionID, classroomID = classroomID };
+                        HttpResponseMessage resp = await client.GetAsync("api/Operation/AbortRecord?classroomID=" + classroomID + "&sessionID=" + LoginInfo.sessionID);
+
+                        if (resp.IsSuccessStatusCode)
+                        {
+                            //ExecutionResult result= await response.Content.ReadAsAsync<ExecutionResult>();
+                            MessageBox.Show("succeeded!");
+                        }
+                        else
+                        {
+                            //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                            MessageBox.Show("failure!");
+                        }
                     }
                     else
                     {
-                        //MessageBox.Show(response.Content.ReadAsStringAsync().Result);
                         MessageBox.Show("failure!");
                     }
                 }
@@ -728,5 +796,46 @@ namespace ClassMonitor3.Interfaces
                 MessageBox.Show(ex.Message);
             }
         }
+
+        protected string GetStopPromptString(ClassroomEngineAgentStatus status)
+        {
+            string coursename = status.CourseName.Replace("\"", "").Replace("'", "");
+            if (coursename.Length > 20)
+            {
+                coursename = coursename.Substring(0, 20);
+            }
+            string commandstring = "Stop";
+            return string.Format("Do you want to {0} course: {1} in classroom {2}", commandstring, coursename, status.ClassroomName);
+        }
+
+        protected string GetAbortPromptString(ClassroomEngineAgentStatus status, bool isTestClass,ref string promtstr)
+        {
+            string coursename = status.CourseName.Replace("\"", "").Replace("'", "");
+            if (coursename.Length > 20)
+            {
+                coursename = coursename.Substring(0, 20);
+            }
+            promtstr = coursename.Replace(" ", "");
+            if (promtstr.Length > 8)
+            {
+                promtstr = promtstr.Substring(0, 8);
+            }
+            if (isTestClass == false)
+            {
+                promtstr = "ABORT" + promtstr;
+            }
+
+            string commandstring = "Abort";
+
+            if (isTestClass == true)
+            {
+                return string.Format("Do you want to {0} course: {1} in classroom {2}", commandstring, coursename, status.ClassroomName);
+            }
+            else
+            {
+                return string.Format("If you want to {0} Course: {1} in classroom {2} ? Please input:  {3}", commandstring, coursename, status.ClassroomName, promtstr);
+            }
+        }
+
     }
 }
