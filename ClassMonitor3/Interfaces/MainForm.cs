@@ -674,6 +674,7 @@ namespace ClassMonitor3.Interfaces
         {
             try
             {
+                button5.Enabled = false;
                 if (dataGridView.SelectedRows.Count == 0)
                     MessageBox.Show("Please select a classroom");
                 else
@@ -702,7 +703,10 @@ namespace ClassMonitor3.Interfaces
             {
                 MessageBox.Show(ex.Message);
             }
-            
+            finally
+            {
+                button5.Enabled = true;
+            }
         }
 
         private async void button8_ClickAsync(object sender, EventArgs e)
