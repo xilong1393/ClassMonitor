@@ -412,6 +412,7 @@ namespace ClassMonitor3.Interfaces
         {
             try
             {
+                btnStopCourse.Enabled = false;
                 if (dataGridView.SelectedRows.Count == 0)
                     MessageBox.Show("Please select a classroom first");
                 else
@@ -428,7 +429,8 @@ namespace ClassMonitor3.Interfaces
                     {
                         ClassroomEngineAgentStatus status = await response.Content.ReadAsAsync<ClassroomEngineAgentStatus>();
                         string prompt = "";
-                        if (status.EngineStatus != "RECORDING A LECTURE" || status.ClassTypeID == null) {
+                        if (status.EngineStatus != "RECORDING A LECTURE" || status.ClassTypeID == null)
+                        {
                             MessageBox.Show("There is not recording in this room!");
                             return;
                         }
@@ -469,7 +471,10 @@ namespace ClassMonitor3.Interfaces
 
                 MessageBox.Show(ex.Message);
             }
-            
+            finally
+            {
+                btnStopCourse.Enabled = true;
+            }
         }
 
         private async void btnPushSchedule_ClickAsync(object sender, EventArgs e)
@@ -511,6 +516,7 @@ namespace ClassMonitor3.Interfaces
         {
             try
             {
+                button2.Enabled = false;
                 if (dataGridView.SelectedRows.Count == 0)
                     MessageBox.Show("Please select a classroom");
                 else
@@ -579,7 +585,10 @@ namespace ClassMonitor3.Interfaces
             {
                 MessageBox.Show(ex.Message);
             }
-            
+            finally
+            {
+                button2.Enabled = true;
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -598,6 +607,7 @@ namespace ClassMonitor3.Interfaces
         {
             try
             {
+                button5.Enabled = false;
                 if (dataGridView.SelectedRows.Count == 0)
                     MessageBox.Show("Please select a classroom");
                 else
@@ -628,13 +638,17 @@ namespace ClassMonitor3.Interfaces
             {
                 MessageBox.Show(ex.Message);
             }
-            
+            finally
+            {
+                button6.Enabled = true;
+            }
         }
 
         private async void button10_ClickAsync(object sender, EventArgs e)
         {
             try
             {
+                button10.Enabled = false;
                 if (dataGridView.SelectedRows.Count == 0)
                     MessageBox.Show("Please select a classroom");
                 else
@@ -667,7 +681,10 @@ namespace ClassMonitor3.Interfaces
 
                 MessageBox.Show(ex.ToString());
             }
-            
+            finally
+            {
+                button10.Enabled = true;
+            }
         }
 
         private async void button5_ClickAsync(object sender, EventArgs e)
@@ -713,6 +730,7 @@ namespace ClassMonitor3.Interfaces
         {
             try
             {
+                button8.Enabled = false;
                 if (dataGridView.SelectedRows.Count == 0)
                     MessageBox.Show("Please select a classroom");
                 else
@@ -741,13 +759,17 @@ namespace ClassMonitor3.Interfaces
             {
                 MessageBox.Show(ex.Message);
             }
-            
+            finally
+            {
+                button8.Enabled = true;
+            }
         }
 
         private async void button9_ClickAsync(object sender, EventArgs e)
         {
             try
             {
+                button9.Enabled = false;
                 if (dataGridView.SelectedRows.Count == 0)
                     MessageBox.Show("Please select a classroom");
                 else
@@ -776,7 +798,10 @@ namespace ClassMonitor3.Interfaces
             {
                 MessageBox.Show(ex.Message);
             }
-            
+            finally
+            {
+                button9.Enabled = true;
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -791,8 +816,6 @@ namespace ClassMonitor3.Interfaces
 
                     GroupScheduleForm gs = new GroupScheduleForm(groupID);
                     gs.Show();
-
-
                 }
             }
             catch (Exception ex)
