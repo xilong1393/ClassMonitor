@@ -33,12 +33,42 @@ namespace ClassMonitor3.Interfaces
             }
             set { this.TokenSource = value; }
         }
-
+        private const int cGrip = 16;      // Grip size
+        private const int cCaption = 32;   // Caption bar height;
         public MainForm()
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
             LoadData();
         }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Rectangle rc = new Rectangle(this.ClientSize.Width - cGrip, this.ClientSize.Height - cGrip, cGrip, cGrip);
+            ControlPaint.DrawSizeGrip(e.Graphics, this.BackColor, rc);
+            rc = new Rectangle(0, 0, this.ClientSize.Width, cCaption);
+            e.Graphics.FillRectangle(Brushes.DarkBlue, rc);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == 0x84)
+            {  // Trap WM_NCHITTEST
+                Point pos = new Point(m.LParam.ToInt32());
+                pos = this.PointToClient(pos);
+                if (pos.Y < cCaption)
+                {
+                    m.Result = (IntPtr)2;  // HTCAPTION
+                    return;
+                }
+                if (pos.X >= this.ClientSize.Width - cGrip && pos.Y >= this.ClientSize.Height - cGrip)
+                {
+                    m.Result = (IntPtr)17; // HTBOTTOMRIGHT
+                    return;
+                }
+            }
+            base.WndProc(ref m);
+        }
+
         public async void LoadData()
         {
             try
@@ -59,7 +89,8 @@ namespace ClassMonitor3.Interfaces
                 }
 
                 if (LoginInfo.user != null)
-                    this.Text = "Remote Monitor - " + LoginInfo.user.FullName + ": " + LoginInfo.sessionID;
+                    //this.Text = "Remote Monitor - " + LoginInfo.user.FullName + ": " + LoginInfo.sessionID;
+                    label1.Text = "Remote Monitor - " + LoginInfo.user.FullName + ": " + LoginInfo.sessionID;
 
             }
             catch (Exception ex)
@@ -105,7 +136,7 @@ namespace ClassMonitor3.Interfaces
                 p.DoubleClick += Panel_DoubleClick;
 
                 FlowLayoutPanel operationPanel = new FlowLayoutPanel();
-                operationPanel.BackColor = Color.Gray;
+                operationPanel.BackColor = Color.Purple;
                 operationPanel.Dock = DockStyle.Bottom;
                 operationPanel.Height = 25;
                 operationPanel.Tag = i;
@@ -117,7 +148,7 @@ namespace ClassMonitor3.Interfaces
                 detail.LinkBehavior = LinkBehavior.NeverUnderline;
                 detail.BorderStyle = BorderStyle.FixedSingle;
                 detail.Text = "Detail";
-                detail.LinkColor = Color.Black;
+                detail.LinkColor = Color.White;
                 detail.Click += Panel_Pop;
                 detail.Tag = list[i];
                 detail.Name = p.Name;
@@ -131,13 +162,13 @@ namespace ClassMonitor3.Interfaces
                 sound.LinkBehavior = LinkBehavior.NeverUnderline;
                 sound.BorderStyle = BorderStyle.FixedSingle;
                 sound.Text = "Sound";
-                sound.LinkColor = Color.Black;
+                sound.LinkColor = Color.White;
                 sound.Click += Play_SoundAsync;
-                //sound.Enabled = false;
                 operationPanel.Controls.Add(sound);
 
                 ComboBox cb = new ComboBox();
-                cb.BackColor = Color.Gray;
+                cb.BackColor = Color.Purple;
+                cb.ForeColor = Color.White;
                 cb.Margin= new Padding(0, 0, 0, 0);
                 cb.Width = 92;
                 cb.ValueMember = "Value";
@@ -191,7 +222,6 @@ namespace ClassMonitor3.Interfaces
                 if (b.Text == "Sound")
                 {
                     b.Text = "Stop";
-                    b.BackColor = Color.Gray;
                     Panel p = (Panel)b.Parent.Parent.Parent;
                     foreach (LinkLabel l in Helper.GetAll(p, b.GetType()).Where(a => a.Text != "Detail" && a != b))
                     {
@@ -376,6 +406,7 @@ namespace ClassMonitor3.Interfaces
             await LoadClassroomList(LoginInfo.sessionID,groupID);
             dataGridView.DataSource = list;
             dataGridView.ClearSelection();
+            //dataGridView.BackgroundColor = Color.Gray;
 
             createPanel(menuCB.SelectedItem.ToString());
         }
@@ -481,6 +512,7 @@ namespace ClassMonitor3.Interfaces
         {
             try
             {
+                btnPushSchedule.Enabled = false;
                 if (dataGridView.SelectedRows.Count == 0)
                     MessageBox.Show("Please select a classroom");
                 else
@@ -509,7 +541,10 @@ namespace ClassMonitor3.Interfaces
             {
                 MessageBox.Show(ex.Message);
             }
-            
+            finally
+            {
+                btnPushSchedule.Enabled = true;
+            }
         }
 
         private async void button2_ClickAsync(object sender, EventArgs e)
@@ -607,7 +642,7 @@ namespace ClassMonitor3.Interfaces
         {
             try
             {
-                button5.Enabled = false;
+                button6.Enabled = false;
                 if (dataGridView.SelectedRows.Count == 0)
                     MessageBox.Show("Please select a classroom");
                 else
@@ -864,5 +899,36 @@ namespace ClassMonitor3.Interfaces
             }
         }
 
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Maximized)
+                this.WindowState = FormWindowState.Normal;
+            else
+                this.WindowState = FormWindowState.Maximized;
+        }
+
+        private void panel3_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                this.Left += e.X - lastPoint.X;
+                this.Top += e.Y - lastPoint.Y;
+            }
+        }
+        Point lastPoint;
+        private void panel3_MouseDown(object sender, MouseEventArgs e)
+        {
+            lastPoint = new Point(e.X, e.Y);
+        }
     }
 }

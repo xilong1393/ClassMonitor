@@ -110,6 +110,12 @@
     <Compile Include="Interfaces\ClassroomInfoForm.Designer.cs">
       <DependentUpon>ClassroomInfoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\CustomMessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\CustomMessageForm.Designer.cs">
+      <DependentUpon>CustomMessageForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\GroupScheduleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +166,11 @@
     <Compile Include="Model\UserOperationLog.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Util\ClassroomData.cs" />
     <Compile Include="Util\ComboItems.cs" />
     <Compile Include="Util\ExecutionResult.cs" />
@@ -191,14 +202,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="ClassMonitor3_TemporaryKey.pfx" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -220,7 +226,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\depaul.png" />
-    <Content Include="static\images\depaullogo.png" />
+    <None Include="Resources\login.png" />
+    <None Include="Resources\close.png" />
+    <None Include="Resources\minimize.png" />
+    <None Include="Resources\expand.png" />
+    <None Include="Resources\icons8-minimize-window-48.png" />
+    <None Include="Resources\icons8-close-window-40.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -233,6 +244,18 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="static\images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-maximize-window-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-monitor-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-monitor-80.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
