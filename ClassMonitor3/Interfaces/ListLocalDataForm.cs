@@ -36,6 +36,8 @@ namespace ClassMonitor3.Interfaces
                 localData[i] = new LocalData();
                 localData[i].Value = list[i];
                 int start = list[i].LastIndexOf("at ");
+                if (start == -1)
+                    continue;
                 localData[i].Datetime = list[i].Substring(start);
             }
 

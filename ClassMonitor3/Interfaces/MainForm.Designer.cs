@@ -31,6 +31,8 @@ namespace ClassMonitor3.Interfaces
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblLogout = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.button9 = new System.Windows.Forms.Button();
@@ -105,63 +107,84 @@ namespace ClassMonitor3.Interfaces
             // 
             // button9
             // 
-            this.button9.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.Location = new System.Drawing.Point(465, 9);
+            this.button9.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button9.FlatAppearance.BorderSize = 0;
+            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button9.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button9.ForeColor = System.Drawing.Color.White;
+            this.button9.Location = new System.Drawing.Point(453, 9);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(72, 27);
+            this.button9.Size = new System.Drawing.Size(80, 27);
             this.button9.TabIndex = 1;
             this.button9.Text = "Reboot IPC";
-            this.button9.UseVisualStyleBackColor = true;
+            this.button9.UseVisualStyleBackColor = false;
             this.button9.Click += new System.EventHandler(this.button9_ClickAsync);
             // 
             // button8
             // 
-            this.button8.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(382, 9);
+            this.button8.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button8.FlatAppearance.BorderSize = 0;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button8.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button8.ForeColor = System.Drawing.Color.White;
+            this.button8.Location = new System.Drawing.Point(367, 9);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(76, 27);
+            this.button8.Size = new System.Drawing.Size(85, 27);
             this.button8.TabIndex = 1;
             this.button8.Text = "Reboot PPC";
-            this.button8.UseVisualStyleBackColor = true;
+            this.button8.UseVisualStyleBackColor = false;
             this.button8.Click += new System.EventHandler(this.button8_ClickAsync);
             // 
             // button5
             // 
-            this.button5.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(194, 9);
+            this.button5.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button5.FlatAppearance.BorderSize = 0;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.ForeColor = System.Drawing.Color.White;
+            this.button5.Location = new System.Drawing.Point(182, 9);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(87, 27);
             this.button5.TabIndex = 1;
             this.button5.Text = "Push Config";
-            this.button5.UseVisualStyleBackColor = true;
+            this.button5.UseVisualStyleBackColor = false;
             this.button5.Click += new System.EventHandler(this.button5_ClickAsync);
             // 
             // button10
             // 
-            this.button10.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button10.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button10.FlatAppearance.BorderSize = 0;
+            this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button10.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button10.ForeColor = System.Drawing.Color.White;
             this.button10.Location = new System.Drawing.Point(943, 9);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(95, 27);
             this.button10.TabIndex = 1;
             this.button10.Text = "List Local Data";
-            this.button10.UseVisualStyleBackColor = true;
+            this.button10.UseVisualStyleBackColor = false;
             this.button10.Click += new System.EventHandler(this.button10_ClickAsync);
             // 
             // button7
             // 
-            this.button7.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button7.FlatAppearance.BorderSize = 0;
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button7.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.ForeColor = System.Drawing.Color.White;
             this.button7.Location = new System.Drawing.Point(840, 9);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(95, 27);
+            this.button7.Size = new System.Drawing.Size(102, 27);
             this.button7.TabIndex = 1;
             this.button7.Text = "Group Schedule";
-            this.button7.UseVisualStyleBackColor = true;
+            this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // menuCB
             // 
             this.menuCB.FormattingEnabled = true;
-            this.menuCB.Location = new System.Drawing.Point(1045, 11);
+            this.menuCB.Location = new System.Drawing.Point(1054, 11);
             this.menuCB.Name = "menuCB";
             this.menuCB.Size = new System.Drawing.Size(100, 23);
             this.menuCB.TabIndex = 10;
@@ -169,68 +192,93 @@ namespace ClassMonitor3.Interfaces
             // 
             // button6
             // 
-            this.button6.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(543, 9);
+            this.button6.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button6.FlatAppearance.BorderSize = 0;
+            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button6.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.ForeColor = System.Drawing.Color.White;
+            this.button6.Location = new System.Drawing.Point(534, 9);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(89, 27);
+            this.button6.Size = new System.Drawing.Size(102, 27);
             this.button6.TabIndex = 1;
             this.button6.Text = "Check Schedule";
-            this.button6.UseVisualStyleBackColor = true;
+            this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.button6_ClickAsync);
             // 
             // btnPushSchedule
             // 
-            this.btnPushSchedule.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPushSchedule.Location = new System.Drawing.Point(288, 9);
+            this.btnPushSchedule.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnPushSchedule.FlatAppearance.BorderSize = 0;
+            this.btnPushSchedule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPushSchedule.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPushSchedule.ForeColor = System.Drawing.Color.White;
+            this.btnPushSchedule.Location = new System.Drawing.Point(270, 9);
             this.btnPushSchedule.Name = "btnPushSchedule";
-            this.btnPushSchedule.Size = new System.Drawing.Size(87, 27);
+            this.btnPushSchedule.Size = new System.Drawing.Size(96, 27);
             this.btnPushSchedule.TabIndex = 1;
             this.btnPushSchedule.Text = "Push Schedule";
-            this.btnPushSchedule.UseVisualStyleBackColor = true;
+            this.btnPushSchedule.UseVisualStyleBackColor = false;
             this.btnPushSchedule.Click += new System.EventHandler(this.btnPushSchedule_ClickAsync);
             // 
             // button11
             // 
-            this.button11.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.Location = new System.Drawing.Point(738, 9);
+            this.button11.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button11.FlatAppearance.BorderSize = 0;
+            this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button11.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button11.ForeColor = System.Drawing.Color.White;
+            this.button11.Location = new System.Drawing.Point(743, 9);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(95, 27);
+            this.button11.Size = new System.Drawing.Size(96, 27);
             this.button11.TabIndex = 0;
             this.button11.Text = "Classroom Info";
-            this.button11.UseVisualStyleBackColor = true;
+            this.button11.UseVisualStyleBackColor = false;
             this.button11.Click += new System.EventHandler(this.button11_ClickAsync);
             // 
             // button3
             // 
-            this.button3.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.ForeColor = System.Drawing.Color.White;
             this.button3.Location = new System.Drawing.Point(637, 9);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(95, 27);
+            this.button3.Size = new System.Drawing.Size(105, 27);
             this.button3.TabIndex = 0;
             this.button3.Text = "Start Test Course";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
-            this.button2.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(99, 9);
+            this.button2.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(92, 9);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(89, 27);
             this.button2.TabIndex = 0;
             this.button2.Text = "Abort Course";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_ClickAsync);
             // 
             // btnStopCourse
             // 
-            this.btnStopCourse.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStopCourse.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.btnStopCourse.FlatAppearance.BorderSize = 0;
+            this.btnStopCourse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStopCourse.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStopCourse.ForeColor = System.Drawing.Color.White;
             this.btnStopCourse.Location = new System.Drawing.Point(4, 9);
             this.btnStopCourse.Name = "btnStopCourse";
             this.btnStopCourse.Size = new System.Drawing.Size(87, 27);
             this.btnStopCourse.TabIndex = 0;
             this.btnStopCourse.Text = "Stop Course";
-            this.btnStopCourse.UseVisualStyleBackColor = true;
+            this.btnStopCourse.UseMnemonic = false;
+            this.btnStopCourse.UseVisualStyleBackColor = false;
             this.btnStopCourse.Click += new System.EventHandler(this.btnStopCourse_ClickAsync);
             // 
             // panel1
@@ -246,12 +294,23 @@ namespace ClassMonitor3.Interfaces
             // 
             // dataGridView
             // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Azure;
+            this.dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
+            this.dataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(76)))), ((int)(((byte)(76)))));
             this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightSteelBlue;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dataGridView.EnableHeadersVisualStyles = false;
             this.dataGridView.Location = new System.Drawing.Point(0, 26);
             this.dataGridView.MultiSelect = false;
             this.dataGridView.Name = "dataGridView";
@@ -292,7 +351,7 @@ namespace ClassMonitor3.Interfaces
             this.flRightPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.flRightPanel.Location = new System.Drawing.Point(611, 87);
             this.flRightPanel.Name = "flRightPanel";
-            this.flRightPanel.Size = new System.Drawing.Size(659, 603);
+            this.flRightPanel.Size = new System.Drawing.Size(659, 605);
             this.flRightPanel.TabIndex = 15;
             // 
             // panel3
@@ -339,9 +398,9 @@ namespace ClassMonitor3.Interfaces
             // 
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox2.Image = global::ClassMonitor3.Properties.Resources.icons8_minimize_window_48;
-            this.pictureBox2.Location = new System.Drawing.Point(1187, 8);
+            this.pictureBox2.Location = new System.Drawing.Point(1182, 8);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(29, 30);
+            this.pictureBox2.Size = new System.Drawing.Size(34, 32);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 12;
             this.pictureBox2.TabStop = false;

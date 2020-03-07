@@ -7,9 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -23,6 +21,7 @@ namespace ClassMonitor3.Interfaces
         List<Task> tasks = new List<Task>();
         List<ClassroomView> list = new List<ClassroomView>();
         List<CancellationTokenSource> tokenSourceList = new List<CancellationTokenSource>();
+  
         public CancellationTokenSource TokenSource
         {
             get
