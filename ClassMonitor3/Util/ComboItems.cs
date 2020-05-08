@@ -1,15 +1,15 @@
 ﻿namespace ClassMonitor3.Util
 {
-    public class ComboItems
+    public class ComboItem
     {
-        public string Text { get; set; }
         public string Value { get; set; }
+        public string Text { get; set; }
         public override string ToString() {
-            return Text;
+            return Value;
         }
-        public ComboItems(string value,string text) {
-            Text = text;
+        public ComboItem(string value,string text) {
             Value = value;
+            Text = text;
         }
     }
 }

@@ -22,8 +22,8 @@ namespace ClassMonitor3.Model
         public string PPCConnectionStatus { get; set; }
         //course
         public string AVStatus { get; set; }
-        public int WBNumber { get; set; }
-        public int KaptivoNumber { get; set; }
+        public string WBNumber { get; set; }
+        public string KaptivoNumber { get; set; }
         public string Status { get; set; }
         //SD
         public int FreeDisk { get; set; }

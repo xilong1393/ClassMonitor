@@ -86,6 +86,12 @@ namespace ClassMonitor3.Util
         private const int DEL_LOCALDATA_COMMAND_ID = 14;
         private const string DEL_LOCALDATA_COMMAND_STR = "colengine-deletedata";
 
+        private const int COLEngineQueryVideoImageType = 50;       // new protocol for original size image
+        private const int COLEngineQueryScreenImageType = 51;
+        private const int COLEngineQueryKaptivo1ImageType = 52;
+        private const int COLEngineQueryKaptivo2ImageType = 53;
+        private const int COLEngineQueryMimio1ImageType = 55;
+        private const int COLEngineQueryMimio2ImageType = 56;
         private const int QUERY_IMAGE_TYPE_ID = 19;
         private const string QUERY_IMAGE_TYPE_STR = "colengine-query-image";
 
@@ -208,10 +214,10 @@ namespace ClassMonitor3.Util
                 throw;
             }
         }
-        public Task<string> GetImageString(string FTPUser, string FTPPassword, int classroomid, String screenshrinkdeptList, string screenshrinktoSizeInM)
+        public Task<string> GetImageString(string FTPUser, string FTPPassword, int classroomid, String screenshrinkdeptList, string screenshrinktoSizeInM, int queryImageTypeID = 19)
         {
             return Task.Run(() =>
-            { return updateengineconfiguration_command_xml(QUERY_IMAGE_TYPE_STR, QUERY_IMAGE_TYPE_ID, _ip, _port + "", FTPUser, FTPPassword, classroomid, screenshrinkdeptList, screenshrinktoSizeInM); }
+            { return updateengineconfiguration_command_xml(QUERY_IMAGE_TYPE_STR, queryImageTypeID, _ip, _port + "", FTPUser, FTPPassword, classroomid, screenshrinkdeptList, screenshrinktoSizeInM); }
             );
         }
         public Task<string> GetAudioData(string FTPUser, string FTPPassword, int classroomid, String screenshrinkdeptList, string screenshrinktoSizeInM)

@@ -88,7 +88,6 @@ namespace ClassMonitor3.Interfaces
                 }
 
                 if (LoginInfo.user != null)
-                    //this.Text = "Remote Monitor - " + LoginInfo.user.FullName + ": " + LoginInfo.sessionID;
                     label1.Text = "Remote Monitor - " + LoginInfo.user.FullName + ": " + LoginInfo.sessionID;
 
             }
@@ -110,7 +109,7 @@ namespace ClassMonitor3.Interfaces
             return list;
         }
 
-        private void createPanel(string text)
+        private void createPanel(string value)
         {
             disposeWave();
             flRightPanel.Controls.Clear();
@@ -168,13 +167,13 @@ namespace ClassMonitor3.Interfaces
                 ComboBox cb = new ComboBox();
                 cb.BackColor = Color.Purple;
                 cb.ForeColor = Color.White;
-                cb.Margin= new Padding(0, 0, 0, 0);
+                cb.Margin = new Padding(0, 0, 0, 0);
                 cb.Width = 92;
                 cb.ValueMember = "Value";
                 cb.DisplayMember = "Text";
-                cb.Items.AddRange(Helper.GetComboItems());
-                cb.Text = text;
-                cb.SelectedIndexChanged += Slide_Change;
+                cb.Items.AddRange(Helper.GetComboItems(list[i]));
+                cb.Text = menuCB.Text;
+                cb.SelectedValueChanged += Slide_Change;
                 operationPanel.Controls.Add(cb);
 
                 Label label = new Label();
@@ -189,7 +188,7 @@ namespace ClassMonitor3.Interfaces
                 panel.Controls.Add(label);
                 panel.Tag = TokenSource;
                 flRightPanel.Controls.Add(panel);
-                tasks.Add(UpdatePictureBox(p, label, panel, text,i));
+                tasks.Add(UpdatePictureBox(p, label, panel, value, i));
             }
         }
 
@@ -284,7 +283,7 @@ namespace ClassMonitor3.Interfaces
             tokenSourceList.Remove(tokenSource);
             tasks.RemoveAt(taskIndex);
             ((Panel)cb.Parent.Parent).Tag = TokenSource;
-            tasks.Insert(taskIndex, UpdatePictureBox((PictureBox)(Helper.GetAll(cb.Parent.Parent, typeof(PictureBox)).First()), (Label)Helper.GetAll(cb.Parent.Parent, typeof(Label)).First(), (Panel)cb.Parent.Parent, cb.Text, taskIndex));
+            tasks.Insert(taskIndex, UpdatePictureBox((PictureBox)(Helper.GetAll(cb.Parent.Parent, typeof(PictureBox)).First()), (Label)Helper.GetAll(cb.Parent.Parent, typeof(Label)).First(), (Panel)cb.Parent.Parent, cb.SelectedItem.ToString(), taskIndex));
         }
         private void Panel_Pop(object sender, EventArgs e)
         {
@@ -317,7 +316,7 @@ namespace ClassMonitor3.Interfaces
             }
         }
 
-        private Task UpdatePictureBox(PictureBox p, Label label, Panel panel, string text, int i)
+        private Task UpdatePictureBox(PictureBox p, Label label, Panel panel, string value, int i)
         {
             CancellationTokenSource tokenSource = (CancellationTokenSource)panel.Tag;
             return Task.Run(async () =>
@@ -331,7 +330,7 @@ namespace ClassMonitor3.Interfaces
                     try
                     {
                         ClassroomData data = new ClassroomData(list[i].PPCPublicIP, list[i].PPCPort);
-                        string xml = await data.GetImageString(null, null, list[i].ClassroomID, null, null);
+                        string xml = await data.GetImageString(null, null, list[i].ClassroomID, null, null, int.Parse(value));
                         byte[] bytes = await data.GetBinary(xml);
                         using (MemoryStream loadStream = new MemoryStream(bytes, 0, bytes.Length))
                         {
@@ -342,7 +341,6 @@ namespace ClassMonitor3.Interfaces
                     }
                     catch (Exception ex)
                     {
-                        //MessageBox.Show(ex.ToString());
                         Action action = () => { label.Text = ex.Message; label.BackColor = Color.Red; };
                         label.SafeInvoke(action, true);
                     }
@@ -397,17 +395,35 @@ namespace ClassMonitor3.Interfaces
             {
                 row.DefaultCellStyle.ForeColor = Color.Green;
             }
+            if (row.Cells["WBNumber"].Value?.ToString()=="1")
+            {
+                row.Cells["WBNumber"].Value = "1/2";
+                row.Cells["WBNumber"].Style.ForeColor = Color.Red;
+            }
+            if (row.Cells["KaptivoNumber"].Value?.ToString() == "1")
+            {
+                row.Cells["KaptivoNumber"].Value = "1/2";
+                row.Cells["KaptivoNumber"].Style.ForeColor = Color.Red;
+            }
         }
 
         private async void menuCB_SelectedIndexChangedAsync(object sender, EventArgs e)
         {
-            int groupID = (int)comboBox.SelectedValue;
-            await LoadClassroomList(LoginInfo.sessionID,groupID);
-            dataGridView.DataSource = list;
-            dataGridView.ClearSelection();
-            //dataGridView.BackgroundColor = Color.Gray;
+            try
+            {
+                int groupID = (int)comboBox.SelectedValue;
+                await LoadClassroomList(LoginInfo.sessionID, groupID);
+                dataGridView.DataSource = list;
+                dataGridView.ClearSelection();
+                //dataGridView.BackgroundColor = Color.Gray;
 
-            createPanel(menuCB.SelectedItem.ToString());
+                createPanel(menuCB.SelectedItem.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
         private async Task LoadClassroomList(string sessionID, int groupID)
         {
@@ -498,7 +514,6 @@ namespace ClassMonitor3.Interfaces
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
             finally

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassMonitor3.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,14 +21,35 @@ namespace ClassMonitor3.Util
             client.BaseAddress = new Uri("http://localhost:9090/");
             return client;
         }
-        public static ComboItems[] GetComboItems()
+        public static ComboItem[] GetComboItems()
         {
-            return new ComboItems[] {//new ComboItems("0"," "),
-                    new ComboItems("1","CameraVideo"),
-                    new ComboItems("2", "whiteboard1"),
-                    new ComboItems("3","whiteboard2"),
-                    new ComboItems("4","TeacherScreen")
+            return new ComboItem[] {//new ComboItems("0"," "),
+                    new ComboItem("19","CameraVideo"),
+                    new ComboItem("55", "whiteboard1"),
+                    new ComboItem("56","whiteboard2"),
+                    new ComboItem("52","Kaptivo1"),
+                    new ComboItem("53","Kaptivo2"),
+                    new ComboItem("51","TeacherScreen")
             };
+        }
+        public static ComboItem[] GetComboItems(ClassroomView classroomView)
+        {
+            List<ComboItem> list = new List<ComboItem>();
+            list.Add(new ComboItem("19", "CameraVideo"));
+            for (int i = 0; i < int.Parse(classroomView.WBNumber); i++)
+            {
+                int wb = 55;
+                ComboItem item = new ComboItem((wb+i) + "", "whiteboard" + (1 + i));
+                list.Add(item);
+            }
+            for (int i = 0; i < int.Parse(classroomView.KaptivoNumber); i++)
+            {
+                int kp = 52;
+                ComboItem item = new ComboItem((kp + i) + "", "Kaptivo" + (1 + i));
+                list.Add(item);
+            }
+            list.Add(new ComboItem("51", "TeacherScreen"));
+            return list.ToArray();
         }
         public static void SafeInvoke(this Control uiElement, Action updater, bool forceSynchronous)
         {
